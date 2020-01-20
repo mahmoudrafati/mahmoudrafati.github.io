@@ -1,3 +1,8 @@
+/* FONTS */
+
+/* NAV FONT */
+@import url('https://fonts.googleapis.com/css?family=Gelasio&display=swap');
+
 html {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -9,9 +14,27 @@ html {
     box-sizing: inherit;
     }
 
-.s1 .display-1 {
+    .display-1 {
     margin-left: 50%;
     margin-top: 30%;
     transform: translate(-45%, -30%);
+    font-family: 'Gelasio', serif;
     position: absolute;
+}
+ .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 5%;
+    font-family: 'Gelasio', serif;
+    font-size: larger;
+ }
+
+
+a {
+    color: rgb(119, 115, 115);
+}
+a:hover{
+    color: rgba(31, 30, 30);
+    text-decoration: underline overline;
 }
