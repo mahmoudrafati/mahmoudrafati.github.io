@@ -8,28 +8,73 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+    <!-- Darkmode -->
+    <link rel="stylesheet" href="./js/dark-mode-switch-1.0.0/dark-mode.css">
     <!-- style.css -->
     <link rel="stylesheet" href="/style/style.css">
-    <title>Mahmoud Rafati</title>
+    <title>Mahmoud Rafati | He</title>
   </head>
   <body style= "cursor: move, auto;">
+
     <!-- NavBar -->
-    <div class="container-flex " id="navbar">
-        <ul class="nav flex-column ">
+    <nav class="navbar navbar-expand-sm navbar-light">
+      <!-- Brand -->
+      <a href="index.html" class="navbar-brand mx-auto"  data-toggle="collapse" data-target="#collapsibleNavbar" style="outline: none; box-shadow: none;">
+        <img src="./src/img/logo_light.jpg" alt="logo" style="width: 45px;">
+      </a>
+      <!-- List Items -->
+      <div class="collapse navbar-collapse text-center" id="collapsibleNavbar">
+        <ul class="navbar-nav ">
           <li class="nav-item ">
-            <a class="nav-link active" href="index.html">Mahmoud Rafati</a>
+            <a href="me.html" class="nav-link">About</a>
+          </li>
+          <li class="nav-item ">
+            <a href="connect.html" class="nav-link">Connect</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="me.html">Who</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="testpage.html">testpage</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="connect.html" tabindex="-1" aria-disabled="true">Let's Connect!</a>
+            <a href="index.html" class="nav-link">home.</a>
           </li>
         </ul>
       </div>
+    </nav>
+    <!-- Section 1 -->
+    <section>
+      <h1 class="display-2" style="margin-left: 15%">Hi! <small class="text-muted align-bottom" style="padding-top: 15%;">and welcome.</small></h1>
+      <p class="text-justify font-weight-light px-5"> 
+      <div class="container" id="me-text">
+        My name is Mahmoud Rafati, im an Computer
+        Science Student at the Goethe University in Frankfurt. The Main Reason i made this page is boredom
+        and for <strong><mark><em> you </em></mark></strong> to get a idea of who i  am.</p>
+      </div>
+      <div id="me-img" class="d-flex align-items-center flex-column" style="margin-bottom: 5%;">
+        <img src="./src/img/me_picture_one.jpg" alt="Me" width="40%">
+        <figcaption><small><em>A Photo a complete Stranger took from me, as i was trying to work.</em></small></figcaption>
+      </div> 
+        </div> 
+        
+      <p class="text-justify font-weight-light pl-5">Here are Some rewievs:</p>
+
+      <div class="container" id="reviews">
+        <blockquote class="blockquote mb-5">
+          <p class="mb-0">Awesome Guy.</p>
+          <footer class="blockquote-footer">Leonardo Di Caprio <cite title="Source Title"> During the Oscars</cite></footer>
+        </blockquote>
+        <blockquote class="blockquote mb-5">
+          <p class="mb-0">One time he won against a Bear with his bare hands.</p>
+          <footer class="blockquote-footer"> Dimitri Woztoyef <cite title="Source Title"> Moskau Times </cite></footer>
+        </blockquote>
+        <blockquote class="blockquote mb-5">
+          <p class="mb-0">"Tastiest thing i ever tasted. 5 Stars."</p>
+          <footer class="blockquote-footer"> Cookie Monster <cite title="Source Title"> in My Kitchen</cite></footer>
+        </blockquote>
+      </div>
+      
+    </section>
+    <!-- JS ONLINE DARKMODE -->
+    <script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.4/lib/darkmode-js.min.js"></script>
+    <script>
+       new Darkmode().showWidget();
+    </script>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

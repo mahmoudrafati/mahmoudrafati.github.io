@@ -3,25 +3,36 @@
 /* NAV FONT */
 @import url('https://fonts.googleapis.com/css?family=Gelasio&display=swap');
 
+@font-face {
+    font-family: 'Noe-DisplayBold';
+    src: url("/src/fonts/Noe-Display-Bold.ttf");
+    }
+        
+
 html {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-  }
-  *, *:before, *:after {
+}
+*, *:before, *:after {
     -webkit-box-sizing: inherit;
     -moz-box-sizing: inherit;
     box-sizing: inherit;
-    }
+}
 
-    .display-1 {
+.display-1 {
     margin-left: 50%;
-    margin-top: 30%;
+    margin-top: 15%;
     transform: translate(-45%, -30%);
-    font-family: 'Gelasio', serif;
+    font-family: 'Noe-DisplayBold';
     position: absolute;
 }
- .nav {
+.display-2 {
+    font-family: 'Noe-DisplayBold', serif;
+  
+}
+
+.nav {
     position: fixed;
     top: 0;
     left: 0;
@@ -30,6 +41,13 @@ html {
     font-size: larger;
  }
 
+ #meCafeImage {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+  
 a {
     color: rgb(119, 115, 115);
 }
@@ -37,3 +55,10 @@ a:hover{
     color: rgba(31, 30, 30);
     text-decoration: underline overline;
 }
+
+}
+@media only screen and (max-width: 600px) {
+    .display-1 {
+        width: auto;
+    }
+} 
