@@ -20,12 +20,20 @@ html {
     box-sizing: inherit;
 }
 
+h4 {
+    padding-left: 50%;
+    font-family: 'Noe-DisplayBold';
+    position: absolute;
+}
+
 .display-1 {
     margin-left: 50%;
     margin-top: 15%;
     transform: translate(-45%, -30%);
     font-family: 'Noe-DisplayBold';
     position: absolute;
+
+    
 }
 .display-2 {
     font-family: 'Noe-DisplayBold', serif;
@@ -56,9 +64,9 @@ a:hover{
     text-decoration: underline overline;
 }
 
-}
-@media only screen and (max-width: 600px) {
-    .display-1 {
-        width: auto;
+
+@media (max-width:600px){
+    .display-1{
+        padding-top: 20%;
+        font-size: 450%;
     }
-} 
