@@ -18,7 +18,7 @@ html {
     --textcolor-normal: #2c333d;
     --displaycolor: #21252A; 
     --displaycolormuted: #6C757D;
-    --linkcolorbefore: #2b373d;
+    --linkcolorbefore: #495b63;
     --linkcolorafter: #052331; 
     
 }
@@ -39,6 +39,7 @@ h4 {
     margin-left: 15%;
     justify-content: center;
     font-family: 'Noe-DisplayBold';
+    √
 }
 
 .container #social {
@@ -49,7 +50,7 @@ h4 {
 
 
 
-.display-2 {
+.display-1 {
     font-family: 'Noe-DisplayBold', serif;
   
 }
@@ -73,9 +74,18 @@ h4 {
 a {
     color: var(--linkcolorbefore);
 }
-a:hover{
+/*a:hover{
     color: var(--linkcolorafter);
     text-decoration: underline overline;
+}*/
+#linkedin:hover{
+    color: #0E76A8;
+}
+#instagram:hover{
+    color:  #E1306C;
+}
+#git:hover{
+    color: #c9510c;
 }
 
 
@@ -97,7 +107,7 @@ a:hover{
     }
 }
 
-@media (max-width:1024px){
+@media (max-width:1028px){
     .navbar-nav{
         margin: 0 auto;
         transform: translate(-1%);
