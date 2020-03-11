@@ -41,12 +41,13 @@ h4 {
     font-family: 'Noe-DisplayBold';
 }
 
-#social {
-    margin-left: 2em;
-    margin-right: 2em;
-    margin-top: 4em;
+.container #social {
+    margin: 0 auto;
+    width: 50%;
     font-size: 3.5em;
 }
+
+
 
 .display-2 {
     font-family: 'Noe-DisplayBold', serif;
@@ -79,7 +80,30 @@ a:hover{
 
 
 @media (max-width:600px){
+    .navbar-nav{
+        margin: 0 auto;
+        transform: translateX(39%);
+    }
+    .container {
+        margin: 0 auto;
+    }
+    .container #social {
+        margin-top: 50%;
+        width: 25%;
+    }
     .display-1{
         padding-top: 20%;
-        font-size: 450%;
+        font-size: 250%;
     }
+}
+
+@media (max-width:1024px){
+    .navbar-nav{
+        margin: 0 auto;
+        transform: translate(-1%);
+    }
+    
+    .container #social {
+        margin-top: 50%;
+    }
+}
