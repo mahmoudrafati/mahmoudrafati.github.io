@@ -1,4 +1,52 @@
-<h1 style="text-align: center;">under construction 🚧 </h1>
-<br>
-<p style="text-align: center;"><em> we'll be right back! </em></p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'><link rel="stylesheet" href="./style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Mahmoud Rafati - Website</title>
+</head>
+<body>
+       <!-- Navigation Menu -->
+<nav id="navbar">
+    <!-- Hamburger Menu Icon -->
+    <svg class="vbp-header-menu-button__svg">
+        <line x1="0" y1="50%" x2="100%" y2="50%" class="top" shape-rendering="crispEdges" />
+        <line x1="0" y1="50%" x2="100%" y2="50%" class="middle" shape-rendering="crispEdges" />
+        <line x1="0" y1="50%" x2="100%" y2="50%" class="bottom" shape-rendering="crispEdges" />
+      </svg>
+    <ul id="nav">
+      <li class="nav-link">
+          <a href="#home">Home</a>
+      </li>
+      <li class="nav-link">
+          <a href="Algo2website/WiSe 23-24/Willkommen Algo Wiki.html">algo wiki</a>
+      </li>
+      <li class="nav-link">
+          <a href="contact.html">contact</a>
+      </li>
+    </ul>
+  </nav>
 
+<section id="home">   <h1>Mahmoud Rafati</h1> </section> 
+<script>
+
+jQuery(document).ready(function () {
+    var body = jQuery(document.body);
+    var button = jQuery("svg");
+    var line = jQuery("line");
+
+    button.click(function () {
+        if (jQuery(document.body).hasClass("menu-open")) {
+            body.removeClass("menu-open");
+            return;
+        }
+        body.addClass("menu-open");
+    });
+});
+
+</script>
+
+</body>
+</html>

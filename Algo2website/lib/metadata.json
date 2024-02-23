@@ -1,0 +1,1009 @@
+{
+  "vaultName": "Uni",
+  "lastExport": 1708690074374,
+  "pluginVersion": "1.8.0",
+  "validBodyClasses": "publish css-settings-manager native-scrollbars theme-light show-inline-title contextual-typography trim-cols h1-l active-line-on metadata-heading-off",
+  "useCustomHeadContent": false,
+  "useCustomFavicon": false,
+  "files": [
+    "WiSe 23-24/Algo2/Übungen/Aufgaben.md",
+    "WiSe 23-24/Algo2/Übungen/Aufgaben_all.md",
+    "WiSe 23-24/Algo2/Übungen/Blatt 9+10.md",
+    "WiSe 23-24/Algo2/Übungen/Blatt 11.md",
+    "WiSe 23-24/Algo2/Übungen/Blatt 13.md",
+    "WiSe 23-24/Algo2/Übungen/Blatt1.md",
+    "WiSe 23-24/Algo2/Übungen/Fragen Superthread ⚡️.md",
+    "WiSe 23-24/Algo2/Übungen/Mortys Scheiss Aufgabe.md",
+    "WiSe 23-24/Algo2/Übungen/Plenum 09.11.23.md",
+    "WiSe 23-24/Algo2/Übungen/Plenum Do 26.10.md",
+    "WiSe 23-24/Algo2/Übungen/Übung 5.md",
+    "WiSe 23-24/Algo2/Übungen/Übung 19. Dezember Blatt 9.md",
+    "WiSe 23-24/Algo2/Übungen/Vorlesung 1. Feb.md",
+    "WiSe 23-24/Algo2/Übungen/Weihnachtsbaumaufgabe.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Amortisierte Analyse/Amortisierte Analyse.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Amortisierte Analyse/Dynamische Tabellen.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Amortisierte Analyse/Splaytrees.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Approx Algos/Approximationsalgorithmen.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Approx Algos/Bounded Search Tree Algorithmus.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Approx Algos/Kombinatorische approximations Algorithmen - Dumb Vertex Cover.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Approx Algos/Kombinatorische approximations Algorithmen - Greedy Vertex Cover.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/ASPS/All Pair Shortest Path.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/ASPS/Kantendisjunkte Pfade.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/ASPS/Shortest augmenting paths.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Entscheidbarkeit/Eigenschaften Entscheidbarkeit.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Entscheidbarkeit/Satz von Rice.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Entscheidbarkeit/Turingmachinen.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Entscheidbarkeit/Unentscheidbare Sprachen.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Entscheidbarkeit/Universelle Turingmaschinen.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Flussnetzwerke/Capacity Scaling Algorithm.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Flussnetzwerke/Edmonds Karp Algortihmus.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Flussnetzwerke/Ford Fulkerson Algorithmus.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Flussnetzwerke/Max-flow min-cut theorem.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Flussnetzwerke/Maximum Bipartite Matching.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Flussnetzwerke/Netzwerkfluss.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Flussnetzwerke/Scaling Algorithmus.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Linesre Programmierung/Ellipsoid Algorithmus.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Linesre Programmierung/Lineare Programmierung I.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Linesre Programmierung/Lineare Programmierung II.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Linesre Programmierung/LP approximation vom VertexCover Problem.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Linesre Programmierung/Simplex Algorithmus.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/NP/NP-Härte.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/NP/NP-Härte II.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Randomisierte Algorithmen/Median & Select.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Randomisierte Algorithmen/Quicksort.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Randomisierte Algorithmen/Randomisierte Algorithmen.md",
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Randomisierte Algorithmen/Randomisierte Algos II.md",
+    "WiSe 23-24/Algo2/Formelsammlung sachen.md",
+    "WiSe 23-24/Algo2/Fragen Plenum.md",
+    "WiSe 23-24/Algo2/Grobe Übersicht an Klausurrelevanten Aufgaben.md",
+    "WiSe 23-24/Screenshots/Approximationsalgorithmen 2024-01-16 13.41.36.excalidraw.md",
+    "WiSe 23-24/Screenshots/Bounded Search Tree Algorithmus 2024-01-16 16.57.56.excalidraw.md",
+    "WiSe 23-24/Screenshots/Ellipsoid Algorithmus 2024-01-20 21.39.08.excalidraw.md",
+    "WiSe 23-24/Screenshots/Ellipsoid Algorithmus 2024-01-20 21.43.23.excalidraw.md",
+    "WiSe 23-24/Screenshots/Lineare Programmierung I 2024-01-19 14.52.00.excalidraw.md",
+    "WiSe 23-24/Screenshots/Median & Select 2023-11-19 16.49.42.excalidraw.md",
+    "WiSe 23-24/Screenshots/NP-Härte 2023-11-25 22.57.10.excalidraw.md",
+    "WiSe 23-24/Screenshots/NP-Härte 2023-11-26 21.38.00.excalidraw.md",
+    "WiSe 23-24/Screenshots/NP-Härte 2023-11-26 22.51.16.excalidraw.md",
+    "WiSe 23-24/Screenshots/NP-Härte 2023-11-26 22.56.38.excalidraw.md",
+    "WiSe 23-24/Screenshots/NP-Härte 2023-11-26 23.12.30.excalidraw.md",
+    "WiSe 23-24/Screenshots/NP-Härte 2024-01-27 13.44.42.excalidraw.md",
+    "WiSe 23-24/Screenshots/NP-Härte II 2023-12-09 16.55.21.excalidraw.md",
+    "WiSe 23-24/Screenshots/NP-Härte II 2023-12-09 17.02.35.excalidraw.md",
+    "WiSe 23-24/Screenshots/NP-Härte II 2023-12-09 17.08.15.excalidraw.md",
+    "WiSe 23-24/Screenshots/NP-Härte II 2023-12-09 17.11.21.excalidraw.md",
+    "WiSe 23-24/Screenshots/NP-Härte II 2023-12-09 17.22.11.excalidraw.md",
+    "WiSe 23-24/Screenshots/NP-Härte II 2023-12-09 18.49.11.excalidraw.md",
+    "WiSe 23-24/Screenshots/Pasted Image 20231209151153_652.png",
+    "WiSe 23-24/Screenshots/Pasted image 20240113195800.png",
+    "WiSe 23-24/Screenshots/Pasted image 20240120161334.png",
+    "WiSe 23-24/Screenshots/Screenshot 2023-11-26 at 22.26.27.png",
+    "WiSe 23-24/Screenshots/Screenshot 2023-11-26 at 22.47.05.png",
+    "WiSe 23-24/Screenshots/Screenshot 2023-11-26 at 22.47.43.png",
+    "WiSe 23-24/Screenshots/Screenshot 2023-11-26 at 22.48.23.png",
+    "WiSe 23-24/Screenshots/Screenshot 2023-11-26 at 23.17.07.png",
+    "WiSe 23-24/Screenshots/Screenshot 2023-11-26 at 23.18.55.png",
+    "WiSe 23-24/Screenshots/Screenshot 2023-11-26 at 23.49.57.png",
+    "WiSe 23-24/Screenshots/Screenshot 2023-12-14 at 21.42.13.png",
+    "WiSe 23-24/Screenshots/Screenshot 2023-12-14 at 21.45.04.png",
+    "WiSe 23-24/Screenshots/Screenshot 2024-01-13 at 19.35.17.png",
+    "WiSe 23-24/Screenshots/Screenshot 2024-01-16 at 18.12.28.png",
+    "WiSe 23-24/Screenshots/Screenshot 2024-01-16 at 18.15.45.png",
+    "WiSe 23-24/Screenshots/Screenshot 2024-01-19 at 15.02.50.png",
+    "WiSe 23-24/Screenshots/Screenshot 2024-01-19 at 15.24.28.png",
+    "WiSe 23-24/Screenshots/Screenshot 2024-01-19 at 15.28.54.png",
+    "WiSe 23-24/Screenshots/Screenshot 2024-01-19 at 15.29.04.png",
+    "WiSe 23-24/Screenshots/Screenshot 2024-01-19 at 15.29.20.png",
+    "WiSe 23-24/Screenshots/Screenshot 2024-01-19 at 15.31.56.png",
+    "WiSe 23-24/Screenshots/Screenshot 2024-01-19 at 15.35.33.png",
+    "WiSe 23-24/Screenshots/Screenshot 2024-02-01 at 13.18.44.png",
+    "WiSe 23-24/Screenshots/Screenshot 2024-02-01 at 15.58.22.png",
+    "WiSe 23-24/Screenshots/Screenshot 2024-02-01 at 18.01.51.png",
+    "WiSe 23-24/Screenshots/Screenshot 2024-02-02 at 18.10.52.png",
+    "WiSe 23-24/Screenshots/Screenshot 2024-02-02 at 21.04.56.png",
+    "WiSe 23-24/Screenshots/Screenshot 2024-02-02 at 21.47.42.png",
+    "WiSe 23-24/Screenshots/Screenshot 2024-02-03 at 13.22.29.png",
+    "WiSe 23-24/Screenshots/Turingmachinen 2023-12-11 19.58.16.excalidraw.md",
+    "WiSe 23-24/Screenshots/Turingmachinen 2023-12-14 21.32.57.excalidraw.md",
+    "WiSe 23-24/Screenshots/Turingmachinen 2023-12-15 14.04.00.excalidraw.md",
+    "WiSe 23-24/Willkommen Algo Wiki.md",
+    "lib/fonts/94f2f163d4b698242fef.otf",
+    "lib/fonts/72505e6a122c6acd5471.woff2",
+    "lib/fonts/2d5198822ab091ce4305.woff2",
+    "lib/fonts/c8ba52b05a9ef10f4758.woff2",
+    "lib/fonts/cb10ffd7684cd9836a05.woff2",
+    "lib/fonts/b5f0f109bc88052d4000.woff2",
+    "lib/fonts/cbe0ae49c52c920fd563.woff2",
+    "lib/fonts/535a6cf662596b3bd6a6.woff2",
+    "lib/fonts/70cc7ff27245e82ad414.ttf",
+    "lib/fonts/454577c22304619db035.ttf",
+    "lib/fonts/52ac8f3034507f1d9e53.ttf",
+    "lib/fonts/05b618077343fbbd92b7.ttf",
+    "lib/fonts/4bb6ac751d1c5478ff3a.woff2",
+    "lib/media/874d8b8e340f75575caa.svg",
+    "lib/fonts/MathJax_Zero.woff",
+    "lib/fonts/MathJax_Main-Regular.woff",
+    "lib/fonts/MathJax_Main-Bold.woff",
+    "lib/fonts/MathJax_Math-Italic.woff",
+    "lib/fonts/MathJax_Main-Italic.woff",
+    "lib/fonts/MathJax_Math-BoldItalic.woff",
+    "lib/fonts/MathJax_Size1-Regular.woff",
+    "lib/fonts/MathJax_Size2-Regular.woff",
+    "lib/fonts/MathJax_Size3-Regular.woff",
+    "lib/fonts/MathJax_Size4-Regular.woff",
+    "lib/fonts/MathJax_AMS-Regular.woff",
+    "lib/fonts/MathJax_Calligraphic-Regular.woff",
+    "lib/fonts/MathJax_Calligraphic-Bold.woff",
+    "lib/fonts/MathJax_Fraktur-Regular.woff",
+    "lib/fonts/MathJax_Fraktur-Bold.woff",
+    "lib/fonts/MathJax_SansSerif-Regular.woff",
+    "lib/fonts/MathJax_SansSerif-Bold.woff",
+    "lib/fonts/MathJax_SansSerif-Italic.woff",
+    "lib/fonts/MathJax_Script-Regular.woff",
+    "lib/fonts/MathJax_Typewriter-Regular.woff",
+    "lib/fonts/MathJax_Vector-Regular.woff",
+    "lib/fonts/MathJax_Vector-Bold.woff"
+  ],
+  "mainDependencies": [
+    "lib/fonts/94f2f163d4b698242fef.otf",
+    "lib/fonts/72505e6a122c6acd5471.woff2",
+    "lib/fonts/2d5198822ab091ce4305.woff2",
+    "lib/fonts/c8ba52b05a9ef10f4758.woff2",
+    "lib/fonts/cb10ffd7684cd9836a05.woff2",
+    "lib/fonts/b5f0f109bc88052d4000.woff2",
+    "lib/fonts/cbe0ae49c52c920fd563.woff2",
+    "lib/fonts/535a6cf662596b3bd6a6.woff2",
+    "lib/fonts/70cc7ff27245e82ad414.ttf",
+    "lib/fonts/454577c22304619db035.ttf",
+    "lib/fonts/52ac8f3034507f1d9e53.ttf",
+    "lib/fonts/05b618077343fbbd92b7.ttf",
+    "lib/fonts/4bb6ac751d1c5478ff3a.woff2",
+    "lib/media/874d8b8e340f75575caa.svg",
+    "lib/fonts/MathJax_Zero.woff",
+    "lib/fonts/MathJax_Main-Regular.woff",
+    "lib/fonts/MathJax_Main-Bold.woff",
+    "lib/fonts/MathJax_Math-Italic.woff",
+    "lib/fonts/MathJax_Main-Italic.woff",
+    "lib/fonts/MathJax_Math-BoldItalic.woff",
+    "lib/fonts/MathJax_Size1-Regular.woff",
+    "lib/fonts/MathJax_Size2-Regular.woff",
+    "lib/fonts/MathJax_Size3-Regular.woff",
+    "lib/fonts/MathJax_Size4-Regular.woff",
+    "lib/fonts/MathJax_AMS-Regular.woff",
+    "lib/fonts/MathJax_Calligraphic-Regular.woff",
+    "lib/fonts/MathJax_Calligraphic-Bold.woff",
+    "lib/fonts/MathJax_Fraktur-Regular.woff",
+    "lib/fonts/MathJax_Fraktur-Bold.woff",
+    "lib/fonts/MathJax_SansSerif-Regular.woff",
+    "lib/fonts/MathJax_SansSerif-Bold.woff",
+    "lib/fonts/MathJax_SansSerif-Italic.woff",
+    "lib/fonts/MathJax_Script-Regular.woff",
+    "lib/fonts/MathJax_Typewriter-Regular.woff",
+    "lib/fonts/MathJax_Vector-Regular.woff",
+    "lib/fonts/MathJax_Vector-Bold.woff"
+  ],
+  "fileInfo": {
+    "WiSe 23-24/Algo2/Übungen/Aufgaben.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 2176,
+      "exportedPath": "WiSe 23-24/Algo2/Übungen/Aufgaben.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Übungen/Aufgaben_all.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 4309,
+      "exportedPath": "WiSe 23-24/Algo2/Übungen/Aufgaben_all.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Übungen/Blatt 9+10.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 19810,
+      "exportedPath": "WiSe 23-24/Algo2/Übungen/Blatt 9+10.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Übungen/Blatt 11.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 0,
+      "exportedPath": "WiSe 23-24/Algo2/Übungen/Blatt 11.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Übungen/Blatt 13.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 3251,
+      "exportedPath": "WiSe 23-24/Algo2/Übungen/Blatt 13.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Übungen/Blatt1.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 1686,
+      "exportedPath": "WiSe 23-24/Algo2/Übungen/Blatt1.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Übungen/Fragen Superthread ⚡️.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 5254,
+      "exportedPath": "WiSe 23-24/Algo2/Übungen/Fragen Superthread ⚡️.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Übungen/Mortys Scheiss Aufgabe.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 1368,
+      "exportedPath": "WiSe 23-24/Algo2/Übungen/Mortys Scheiss Aufgabe.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Übungen/Plenum 09.11.23.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 291,
+      "exportedPath": "WiSe 23-24/Algo2/Übungen/Plenum 09.11.23.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Übungen/Plenum Do 26.10.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 887,
+      "exportedPath": "WiSe 23-24/Algo2/Übungen/Plenum Do 26.10.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Übungen/Übung 5.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 4717,
+      "exportedPath": "WiSe 23-24/Algo2/Übungen/Übung 5.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Übungen/Übung 19. Dezember Blatt 9.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 1921,
+      "exportedPath": "WiSe 23-24/Algo2/Übungen/Übung 19. Dezember Blatt 9.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Übungen/Vorlesung 1. Feb.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 773,
+      "exportedPath": "WiSe 23-24/Algo2/Übungen/Vorlesung 1. Feb.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Übungen/Weihnachtsbaumaufgabe.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 0,
+      "exportedPath": "WiSe 23-24/Algo2/Übungen/Weihnachtsbaumaufgabe.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Amortisierte Analyse/Amortisierte Analyse.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 2627,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Amortisierte Analyse/Amortisierte Analyse.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Amortisierte Analyse/Dynamische Tabellen.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 686,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Amortisierte Analyse/Dynamische Tabellen.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Amortisierte Analyse/Splaytrees.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 557,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Amortisierte Analyse/Splaytrees.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Approx Algos/Approximationsalgorithmen.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 3723,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Approx Algos/Approximationsalgorithmen.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Approx Algos/Bounded Search Tree Algorithmus.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 1877,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Approx Algos/Bounded Search Tree Algorithmus.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Approx Algos/Kombinatorische approximations Algorithmen - Dumb Vertex Cover.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 589,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Approx Algos/Kombinatorische approximations Algorithmen - Dumb Vertex Cover.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Approx Algos/Kombinatorische approximations Algorithmen - Greedy Vertex Cover.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 2196,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Approx Algos/Kombinatorische approximations Algorithmen - Greedy Vertex Cover.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/ASPS/All Pair Shortest Path.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 3803,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/ASPS/All Pair Shortest Path.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/ASPS/Kantendisjunkte Pfade.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 1261,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/ASPS/Kantendisjunkte Pfade.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/ASPS/Shortest augmenting paths.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 790,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/ASPS/Shortest augmenting paths.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Entscheidbarkeit/Eigenschaften Entscheidbarkeit.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 2038,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Entscheidbarkeit/Eigenschaften Entscheidbarkeit.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Entscheidbarkeit/Satz von Rice.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 3686,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Entscheidbarkeit/Satz von Rice.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Entscheidbarkeit/Turingmachinen.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 8156,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Entscheidbarkeit/Turingmachinen.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Entscheidbarkeit/Unentscheidbare Sprachen.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 5024,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Entscheidbarkeit/Unentscheidbare Sprachen.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Entscheidbarkeit/Universelle Turingmaschinen.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 1588,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Entscheidbarkeit/Universelle Turingmaschinen.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Flussnetzwerke/Capacity Scaling Algorithm.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 1513,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Flussnetzwerke/Capacity Scaling Algorithm.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Flussnetzwerke/Edmonds Karp Algortihmus.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 580,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Flussnetzwerke/Edmonds Karp Algortihmus.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Flussnetzwerke/Ford Fulkerson Algorithmus.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 1449,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Flussnetzwerke/Ford Fulkerson Algorithmus.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Flussnetzwerke/Max-flow min-cut theorem.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 1952,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Flussnetzwerke/Max-flow min-cut theorem.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Flussnetzwerke/Maximum Bipartite Matching.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 987,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Flussnetzwerke/Maximum Bipartite Matching.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Flussnetzwerke/Netzwerkfluss.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 3449,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Flussnetzwerke/Netzwerkfluss.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Flussnetzwerke/Scaling Algorithmus.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 953,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Flussnetzwerke/Scaling Algorithmus.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Linesre Programmierung/Ellipsoid Algorithmus.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 835,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Linesre Programmierung/Ellipsoid Algorithmus.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Linesre Programmierung/Lineare Programmierung I.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 6221,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Linesre Programmierung/Lineare Programmierung I.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Linesre Programmierung/Lineare Programmierung II.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 825,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Linesre Programmierung/Lineare Programmierung II.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Linesre Programmierung/LP approximation vom VertexCover Problem.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 4829,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Linesre Programmierung/LP approximation vom VertexCover Problem.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Linesre Programmierung/Simplex Algorithmus.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 1124,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Linesre Programmierung/Simplex Algorithmus.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/NP/NP-Härte.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 5490,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/NP/NP-Härte.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/NP/NP-Härte II.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 3967,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/NP/NP-Härte II.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Randomisierte Algorithmen/Median & Select.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 2569,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Randomisierte Algorithmen/Median & Select.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Randomisierte Algorithmen/Quicksort.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 1343,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Randomisierte Algorithmen/Quicksort.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Randomisierte Algorithmen/Randomisierte Algorithmen.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 6202,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Randomisierte Algorithmen/Randomisierte Algorithmen.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Randomisierte Algorithmen/Randomisierte Algos II.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 2103,
+      "exportedPath": "WiSe 23-24/Algo2/Vorlsungszusammenfassung/Randomisierte Algorithmen/Randomisierte Algos II.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Formelsammlung sachen.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 45,
+      "exportedPath": "WiSe 23-24/Algo2/Formelsammlung sachen.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Fragen Plenum.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 1172,
+      "exportedPath": "WiSe 23-24/Algo2/Fragen Plenum.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Algo2/Grobe Übersicht an Klausurrelevanten Aufgaben.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 711,
+      "exportedPath": "WiSe 23-24/Algo2/Grobe Übersicht an Klausurrelevanten Aufgaben.html",
+      "dependencies": []
+    },
+    "lib/fonts/94f2f163d4b698242fef.otf": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 66800,
+      "exportedPath": "lib/fonts/94f2f163d4b698242fef.otf",
+      "dependencies": []
+    },
+    "lib/fonts/72505e6a122c6acd5471.woff2": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 104232,
+      "exportedPath": "lib/fonts/72505e6a122c6acd5471.woff2",
+      "dependencies": []
+    },
+    "lib/fonts/2d5198822ab091ce4305.woff2": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 104332,
+      "exportedPath": "lib/fonts/2d5198822ab091ce4305.woff2",
+      "dependencies": []
+    },
+    "lib/fonts/c8ba52b05a9ef10f4758.woff2": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 98868,
+      "exportedPath": "lib/fonts/c8ba52b05a9ef10f4758.woff2",
+      "dependencies": []
+    },
+    "lib/fonts/cb10ffd7684cd9836a05.woff2": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 106876,
+      "exportedPath": "lib/fonts/cb10ffd7684cd9836a05.woff2",
+      "dependencies": []
+    },
+    "lib/fonts/b5f0f109bc88052d4000.woff2": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 105804,
+      "exportedPath": "lib/fonts/b5f0f109bc88052d4000.woff2",
+      "dependencies": []
+    },
+    "lib/fonts/cbe0ae49c52c920fd563.woff2": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 106108,
+      "exportedPath": "lib/fonts/cbe0ae49c52c920fd563.woff2",
+      "dependencies": []
+    },
+    "lib/fonts/535a6cf662596b3bd6a6.woff2": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 111708,
+      "exportedPath": "lib/fonts/535a6cf662596b3bd6a6.woff2",
+      "dependencies": []
+    },
+    "lib/fonts/70cc7ff27245e82ad414.ttf": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 192740,
+      "exportedPath": "lib/fonts/70cc7ff27245e82ad414.ttf",
+      "dependencies": []
+    },
+    "lib/fonts/454577c22304619db035.ttf": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 161376,
+      "exportedPath": "lib/fonts/454577c22304619db035.ttf",
+      "dependencies": []
+    },
+    "lib/fonts/52ac8f3034507f1d9e53.ttf": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 191568,
+      "exportedPath": "lib/fonts/52ac8f3034507f1d9e53.ttf",
+      "dependencies": []
+    },
+    "lib/fonts/05b618077343fbbd92b7.ttf": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 155288,
+      "exportedPath": "lib/fonts/05b618077343fbbd92b7.ttf",
+      "dependencies": []
+    },
+    "lib/fonts/4bb6ac751d1c5478ff3a.woff2": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 7876,
+      "exportedPath": "lib/fonts/4bb6ac751d1c5478ff3a.woff2",
+      "dependencies": []
+    },
+    "lib/media/874d8b8e340f75575caa.svg": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 317,
+      "exportedPath": "lib/media/874d8b8e340f75575caa.svg",
+      "dependencies": []
+    },
+    "lib/fonts/MathJax_Zero.woff": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 1368,
+      "exportedPath": "lib/fonts/MathJax_Zero.woff",
+      "dependencies": []
+    },
+    "lib/fonts/MathJax_Main-Regular.woff": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 34160,
+      "exportedPath": "lib/fonts/MathJax_Main-Regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/MathJax_Main-Bold.woff": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 34464,
+      "exportedPath": "lib/fonts/MathJax_Main-Bold.woff",
+      "dependencies": []
+    },
+    "lib/fonts/MathJax_Math-Italic.woff": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 19360,
+      "exportedPath": "lib/fonts/MathJax_Math-Italic.woff",
+      "dependencies": []
+    },
+    "lib/fonts/MathJax_Main-Italic.woff": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 20832,
+      "exportedPath": "lib/fonts/MathJax_Main-Italic.woff",
+      "dependencies": []
+    },
+    "lib/fonts/MathJax_Math-BoldItalic.woff": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 19776,
+      "exportedPath": "lib/fonts/MathJax_Math-BoldItalic.woff",
+      "dependencies": []
+    },
+    "lib/fonts/MathJax_Size1-Regular.woff": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 5792,
+      "exportedPath": "lib/fonts/MathJax_Size1-Regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/MathJax_Size2-Regular.woff": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 5464,
+      "exportedPath": "lib/fonts/MathJax_Size2-Regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/MathJax_Size3-Regular.woff": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 3244,
+      "exportedPath": "lib/fonts/MathJax_Size3-Regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/MathJax_Size4-Regular.woff": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 5148,
+      "exportedPath": "lib/fonts/MathJax_Size4-Regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/MathJax_AMS-Regular.woff": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 40808,
+      "exportedPath": "lib/fonts/MathJax_AMS-Regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/MathJax_Calligraphic-Regular.woff": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 9600,
+      "exportedPath": "lib/fonts/MathJax_Calligraphic-Regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/MathJax_Calligraphic-Bold.woff": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 9908,
+      "exportedPath": "lib/fonts/MathJax_Calligraphic-Bold.woff",
+      "dependencies": []
+    },
+    "lib/fonts/MathJax_Fraktur-Regular.woff": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 21480,
+      "exportedPath": "lib/fonts/MathJax_Fraktur-Regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/MathJax_Fraktur-Bold.woff": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 22340,
+      "exportedPath": "lib/fonts/MathJax_Fraktur-Bold.woff",
+      "dependencies": []
+    },
+    "lib/fonts/MathJax_SansSerif-Regular.woff": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 12660,
+      "exportedPath": "lib/fonts/MathJax_SansSerif-Regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/MathJax_SansSerif-Bold.woff": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 15944,
+      "exportedPath": "lib/fonts/MathJax_SansSerif-Bold.woff",
+      "dependencies": []
+    },
+    "lib/fonts/MathJax_SansSerif-Italic.woff": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 14628,
+      "exportedPath": "lib/fonts/MathJax_SansSerif-Italic.woff",
+      "dependencies": []
+    },
+    "lib/fonts/MathJax_Script-Regular.woff": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 11852,
+      "exportedPath": "lib/fonts/MathJax_Script-Regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/MathJax_Typewriter-Regular.woff": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 17604,
+      "exportedPath": "lib/fonts/MathJax_Typewriter-Regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/MathJax_Vector-Regular.woff": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 1136,
+      "exportedPath": "lib/fonts/MathJax_Vector-Regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/MathJax_Vector-Bold.woff": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 1116,
+      "exportedPath": "lib/fonts/MathJax_Vector-Bold.woff",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Approximationsalgorithmen 2024-01-16 13.41.36.excalidraw.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 43060,
+      "exportedPath": "WiSe 23-24/Screenshots/Approximationsalgorithmen 2024-01-16 13.41.36.excalidraw.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Bounded Search Tree Algorithmus 2024-01-16 16.57.56.excalidraw.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 8930,
+      "exportedPath": "WiSe 23-24/Screenshots/Bounded Search Tree Algorithmus 2024-01-16 16.57.56.excalidraw.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Ellipsoid Algorithmus 2024-01-20 21.39.08.excalidraw.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 6547,
+      "exportedPath": "WiSe 23-24/Screenshots/Ellipsoid Algorithmus 2024-01-20 21.39.08.excalidraw.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Ellipsoid Algorithmus 2024-01-20 21.43.23.excalidraw.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 9716,
+      "exportedPath": "WiSe 23-24/Screenshots/Ellipsoid Algorithmus 2024-01-20 21.43.23.excalidraw.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Lineare Programmierung I 2024-01-19 14.52.00.excalidraw.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 11984,
+      "exportedPath": "WiSe 23-24/Screenshots/Lineare Programmierung I 2024-01-19 14.52.00.excalidraw.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Median & Select 2023-11-19 16.49.42.excalidraw.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 46559,
+      "exportedPath": "WiSe 23-24/Screenshots/Median & Select 2023-11-19 16.49.42.excalidraw.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/NP-Härte 2023-11-25 22.57.10.excalidraw.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 5745,
+      "exportedPath": "WiSe 23-24/Screenshots/NP-Härte 2023-11-25 22.57.10.excalidraw.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/NP-Härte 2023-11-26 21.38.00.excalidraw.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 12974,
+      "exportedPath": "WiSe 23-24/Screenshots/NP-Härte 2023-11-26 21.38.00.excalidraw.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/NP-Härte 2023-11-26 22.51.16.excalidraw.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 13078,
+      "exportedPath": "WiSe 23-24/Screenshots/NP-Härte 2023-11-26 22.51.16.excalidraw.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/NP-Härte 2023-11-26 22.56.38.excalidraw.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 29842,
+      "exportedPath": "WiSe 23-24/Screenshots/NP-Härte 2023-11-26 22.56.38.excalidraw.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/NP-Härte 2023-11-26 23.12.30.excalidraw.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 8442,
+      "exportedPath": "WiSe 23-24/Screenshots/NP-Härte 2023-11-26 23.12.30.excalidraw.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/NP-Härte 2024-01-27 13.44.42.excalidraw.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 6227,
+      "exportedPath": "WiSe 23-24/Screenshots/NP-Härte 2024-01-27 13.44.42.excalidraw.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/NP-Härte II 2023-12-09 16.55.21.excalidraw.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 10598,
+      "exportedPath": "WiSe 23-24/Screenshots/NP-Härte II 2023-12-09 16.55.21.excalidraw.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/NP-Härte II 2023-12-09 17.02.35.excalidraw.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 13829,
+      "exportedPath": "WiSe 23-24/Screenshots/NP-Härte II 2023-12-09 17.02.35.excalidraw.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/NP-Härte II 2023-12-09 17.08.15.excalidraw.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 9312,
+      "exportedPath": "WiSe 23-24/Screenshots/NP-Härte II 2023-12-09 17.08.15.excalidraw.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/NP-Härte II 2023-12-09 17.11.21.excalidraw.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 23404,
+      "exportedPath": "WiSe 23-24/Screenshots/NP-Härte II 2023-12-09 17.11.21.excalidraw.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/NP-Härte II 2023-12-09 17.22.11.excalidraw.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 21167,
+      "exportedPath": "WiSe 23-24/Screenshots/NP-Härte II 2023-12-09 17.22.11.excalidraw.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/NP-Härte II 2023-12-09 18.49.11.excalidraw.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 54693,
+      "exportedPath": "WiSe 23-24/Screenshots/NP-Härte II 2023-12-09 18.49.11.excalidraw.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Pasted Image 20231209151153_652.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 525,
+      "exportedPath": "WiSe 23-24/Screenshots/Pasted Image 20231209151153_652.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Pasted image 20240113195800.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 36084,
+      "exportedPath": "WiSe 23-24/Screenshots/Pasted image 20240113195800.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Pasted image 20240120161334.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 535068,
+      "exportedPath": "WiSe 23-24/Screenshots/Pasted image 20240120161334.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2023-11-26 at 22.26.27.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 89238,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2023-11-26 at 22.26.27.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2023-11-26 at 22.47.05.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 34831,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2023-11-26 at 22.47.05.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2023-11-26 at 22.47.43.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 107732,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2023-11-26 at 22.47.43.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2023-11-26 at 22.48.23.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 43375,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2023-11-26 at 22.48.23.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2023-11-26 at 23.17.07.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 177476,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2023-11-26 at 23.17.07.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2023-11-26 at 23.18.55.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 94424,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2023-11-26 at 23.18.55.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2023-11-26 at 23.49.57.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 111224,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2023-11-26 at 23.49.57.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2023-12-14 at 21.42.13.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 136479,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2023-12-14 at 21.42.13.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2023-12-14 at 21.45.04.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 137785,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2023-12-14 at 21.45.04.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2024-01-13 at 19.35.17.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 120511,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2024-01-13 at 19.35.17.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2024-01-16 at 18.12.28.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 132052,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2024-01-16 at 18.12.28.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2024-01-16 at 18.15.45.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 52277,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2024-01-16 at 18.15.45.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2024-01-19 at 15.02.50.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 52654,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2024-01-19 at 15.02.50.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2024-01-19 at 15.24.28.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 72616,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2024-01-19 at 15.24.28.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2024-01-19 at 15.28.54.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 22724,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2024-01-19 at 15.28.54.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2024-01-19 at 15.29.04.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 19317,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2024-01-19 at 15.29.04.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2024-01-19 at 15.29.20.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 20535,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2024-01-19 at 15.29.20.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2024-01-19 at 15.31.56.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 69848,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2024-01-19 at 15.31.56.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2024-01-19 at 15.35.33.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 53999,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2024-01-19 at 15.35.33.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2024-02-01 at 13.18.44.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 444934,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2024-02-01 at 13.18.44.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2024-02-01 at 15.58.22.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 215959,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2024-02-01 at 15.58.22.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2024-02-01 at 18.01.51.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 213163,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2024-02-01 at 18.01.51.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2024-02-02 at 18.10.52.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 88674,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2024-02-02 at 18.10.52.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2024-02-02 at 21.04.56.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 176250,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2024-02-02 at 21.04.56.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2024-02-02 at 21.47.42.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 197333,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2024-02-02 at 21.47.42.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Screenshot 2024-02-03 at 13.22.29.png": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 139460,
+      "exportedPath": "WiSe 23-24/Screenshots/Screenshot 2024-02-03 at 13.22.29.png",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Turingmachinen 2023-12-11 19.58.16.excalidraw.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 20680,
+      "exportedPath": "WiSe 23-24/Screenshots/Turingmachinen 2023-12-11 19.58.16.excalidraw.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Turingmachinen 2023-12-14 21.32.57.excalidraw.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 29767,
+      "exportedPath": "WiSe 23-24/Screenshots/Turingmachinen 2023-12-14 21.32.57.excalidraw.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Screenshots/Turingmachinen 2023-12-15 14.04.00.excalidraw.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 19019,
+      "exportedPath": "WiSe 23-24/Screenshots/Turingmachinen 2023-12-15 14.04.00.excalidraw.html",
+      "dependencies": []
+    },
+    "WiSe 23-24/Willkommen Algo Wiki.md": {
+      "modifiedTime": 1708690074374,
+      "sourceSize": 147,
+      "exportedPath": "WiSe 23-24/Willkommen Algo Wiki.html",
+      "dependencies": []
+    }
+  }
+}
