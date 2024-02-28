@@ -37,7 +37,33 @@ html {
     text-decoration: none; /* Remove the underline */
 }
 
+/* let headings not break the layout */
+h1, h2, h3, h4, h5, h6 {
+	margin: 0;
+	margin-left: 10%;
+}
+/* let headings be at readable size */
+h1 {
+	font-size: 2.5rem;
+}
+h2 {
+	font-size: 2rem;
+}
+h3 {
+	font-size: 1.5rem;
+}
+h4 {
+	font-size: 1.2rem;
+}
+h5 {
+	font-size: 1rem;
+}
 
+
+p {
+	max-width: 60ch;
+	margin: 0 auto;
+}
 /* Hide burger menu icon initially */
 .vbp-header-menu-button__svg {
 	display: none;
@@ -172,4 +198,19 @@ body.menu-open .vbp-header-menu-button__svg line.bottom {
 
 body.menu-open .vbp-header-menu-button__svg .bottom {
 	stroke-dashoffset: 0%;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+}
+
+
+
+
+#contact-text {
+	color: #787878;
 }

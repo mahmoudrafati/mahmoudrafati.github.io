@@ -3,10 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'><link rel="stylesheet" href="./style.css">
     <title>contact</title>
 </head>
 <body>
-    <h1>Text me</h1>
+    <!-- Navigation Menu -->
+<nav id="navbar">
+ <!-- Hamburger Menu Icon -->
+ <svg class="vbp-header-menu-button__svg">
+     <line x1="0" y1="50%" x2="100%" y2="50%" class="top" shape-rendering="crispEdges" />
+     <line x1="0" y1="50%" x2="100%" y2="50%" class="middle" shape-rendering="crispEdges" />
+     <line x1="0" y1="50%" x2="100%" y2="50%" class="bottom" shape-rendering="crispEdges" />
+   </svg>
+ <ul id="nav">
+   <li class="nav-link">
+       <a href="index.html">Home</a>
+   </li>
+   <li class="nav-link">
+       <a href="Algo2website/WiSe 23-24/Willkommen Algo Wiki.html">algo wiki</a>
+   </li>
+   <li class="nav-link">
+       <a href="contact.html">contact</a>
+   </li>
+   <li class="nav-link">
+       <a href="about.html">about</a>
+     </li>
+ </ul>
+</nav>
+    <h1 id="contact-text">Text me</h1>
     <form action="send_email.php" method="post">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required>
