@@ -74,6 +74,116 @@
             50% { transform: scale(1.1); }
             100% { transform: scale(1); }
         }
+        
+        /* Gewinner-Bildschirm Styles */
+        .winner-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+            background-image: radial-gradient(circle at center, #2c0a3b 0%, #130525 70%, #000000 100%);
+            overflow: hidden;
+        }
+        
+        .winner-screen.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .winner-title {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 30px #ffd700;
+            animation: glow 2s infinite alternate;
+        }
+        
+        .winner-name {
+            font-size: 72px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px #4ecdc4, 0 0 20px #4ecdc4;
+        }
+        
+        .winner-final-lp {
+            font-size: 36px;
+            color: #ff6b6b;
+            margin-bottom: 30px;
+        }
+        
+        .loser-final-lp {
+            font-size: 24px;
+            color: #888;
+            margin-bottom: 50px;
+        }
+        
+        .pyramid-effect {
+            position: absolute;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: linear-gradient(to top, rgba(255, 215, 0, 0.2), transparent);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            z-index: -1;
+            animation: pyramid-glow 3s infinite alternate;
+        }
+        
+        .eye-symbol {
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 80px;
+            color: #ffd700;
+            text-shadow: 0 0 20px #ffd700;
+            z-index: -1;
+            opacity: 0.6;
+        }
+        
+        .light-beam {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 500px;
+            background: linear-gradient(to bottom, rgba(255, 215, 0, 0.8), transparent);
+            z-index: -2;
+            opacity: 0.3;
+            animation: light-pulse 4s infinite alternate;
+        }
+        
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700; }
+            100% { text-shadow: 0 0 15px #ffd700, 0 0 30px #ffd700, 0 0 45px #ffd700; }
+        }
+        
+        @keyframes pyramid-glow {
+            0% { opacity: 0.2; }
+            100% { opacity: 0.5; }
+        }
+        
+        @keyframes light-pulse {
+            0% { opacity: 0.2; height: 400px; }
+            100% { opacity: 0.4; height: 600px; }
+        }
 
         .connection-status {
             position: absolute;
@@ -114,6 +224,22 @@
             <div class="life-points" id="player2Life">8000</div>
         </div>
     </div>
+    
+    <!-- Gewinner-Bildschirm -->
+    <div class="winner-screen" id="winnerScreen">
+        <div class="eye-symbol">☥</div>
+        <div class="light-beam"></div>
+        <div class="pyramid-effect"></div>
+        <div class="winner-title">Duell Gewinner</div>
+        <div class="winner-name" id="winnerName">Spieler 1</div>
+        <div class="winner-final-lp" id="winnerLP">Lebenspunkte: 8000</div>
+        <div class="loser-final-lp" id="loserLP">Gegner: 0</div>
+    </div>
+    
+    <!-- Audio-Elemente -->
+    <audio id="pointsSound" src="content/points.mp3" preload="auto"></audio>
+    <audio id="lostSound" src="content/lost.mp3" preload="auto"></audio>
+    <audio id="winSound" src="content/win.mp3" preload="auto"></audio>
 
     <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
     <script>
@@ -206,22 +332,34 @@
         }
 
         function updateDisplay() {
-            // Get current display values to animate from
-            const player1LifeElement = document.getElementById('player1Life');
-            const player2LifeElement = document.getElementById('player2Life');
+            // Vorherige Lebenspunkte speichern, um Änderungen zu erkennen
+            const prevP1Life = parseInt(document.getElementById('player1Life').textContent);
+            const prevP2Life = parseInt(document.getElementById('player2Life').textContent);
             
-            const player1PrevLife = player1LifeElement.textContent || gameState.player1.life;
-            const player2PrevLife = player2LifeElement.textContent || gameState.player2.life;
-            
-            // Update names
+            // Update player names and life points in overlay
             document.getElementById('player1Name').textContent = gameState.player1.name;
+            document.getElementById('player1Life').textContent = gameState.player1.life;
             document.getElementById('player2Name').textContent = gameState.player2.name;
-            
-            // Animate life points
-            animateLifePoints(player1LifeElement, player1PrevLife, gameState.player1.life, 800);
-            animateLifePoints(player2LifeElement, player2PrevLife, gameState.player2.life, 800);
+            document.getElementById('player2Life').textContent = gameState.player2.life;
 
-            // Update colors based on who's winning
+            // Prüfe auf Lebensänderungen und spiele Soundeffekte
+            const newP1Life = gameState.player1.life;
+            const newP2Life = gameState.player2.life;
+            
+            if (prevP1Life !== newP1Life || prevP2Life !== newP2Life) {
+                // Spiele Punkteänderungs-Sound ab
+                playSound('pointsSound');
+                
+                // Prüfe auf Spielende (wenn ein Spieler 0 LP hat)
+                if (newP1Life === 0 || newP2Life === 0) {
+                    // Warte kurz und zeige dann den Gewinner-Bildschirm an
+                    setTimeout(() => {
+                        showWinnerScreen();
+                    }, 1500);
+                }
+            }
+
+            // Farbe basierend auf Life Points
             updateLifePointsColor(1, gameState.player1.life);
             updateLifePointsColor(2, gameState.player2.life);
         }
@@ -405,6 +543,54 @@
             }
         }
 
+        // Funktion für Soundeffekte
+        function playSound(soundId) {
+            const sound = document.getElementById(soundId);
+            if (sound) {
+                sound.currentTime = 0; // Zurücksetzen, falls der Sound bereits läuft
+                sound.play().catch(e => console.error('[Overlay] Sound playback error:', e));
+            }
+        }
+        
+        // Funktion zum Anzeigen des Gewinner-Bildschirms
+        function showWinnerScreen() {
+            const winnerScreen = document.getElementById('winnerScreen');
+            const p1Life = gameState.player1.life;
+            const p2Life = gameState.player2.life;
+            
+            let winner, loser, winnerLP, loserLP;
+            
+            if (p1Life > p2Life) {
+                winner = gameState.player1.name;
+                loser = gameState.player2.name;
+                winnerLP = p1Life;
+                loserLP = p2Life;
+            } else {
+                winner = gameState.player2.name;
+                loser = gameState.player1.name;
+                winnerLP = p2Life;
+                loserLP = p1Life;
+            }
+            
+            // Gewinnerdaten aktualisieren
+            document.getElementById('winnerName').textContent = winner;
+            document.getElementById('winnerLP').textContent = `Lebenspunkte: ${winnerLP}`;
+            document.getElementById('loserLP').textContent = `Gegner: ${loserLP}`;
+            
+            // Sound-Sequenz abspielen: points -> lost -> win
+            playSound('lostSound');
+            
+            setTimeout(() => {
+                playSound('winSound');
+                winnerScreen.classList.add('visible');
+            }, 1500);
+            
+            // Optional: Schließen des Gewinner-Bildschirms nach einer Weile
+            setTimeout(() => {
+                winnerScreen.classList.remove('visible');
+            }, 10000);
+        }
+        
         // Initialize when page loads
         window.addEventListener('load', function() {
             // Try connecting three times with delays to increase success chance
