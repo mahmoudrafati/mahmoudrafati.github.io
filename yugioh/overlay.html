@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yu-Gi-Oh! Overlay</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: transparent;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* Overlay-Bereich - immer im Overlay-Modus */
+        .overlay-section {
+            position: relative;
+            height: 100vh;
+            width: 100vw;
+            background: transparent;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+        }
+
+        .player-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px 25px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            border: 2px solid #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            min-width: 200px;
+        }
+
+        .player-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .life-points {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ff6b6b;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            font-family: 'Courier New', monospace;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .life-points.winning {
+            color: #4ecdc4;
+        }
+
+        .life-points.changed {
+            animation: pulse 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .connection-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .connection-status.connected {
+            background: #4ecdc4;
+            color: white;
+        }
+
+        .connection-status.disconnected {
+            background: #ff6b6b;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Verbindungsstatus -->
+    <div class="connection-status" id="connectionStatus">Verbinde...</div>
+
+    <!-- Overlay-Bereich - immer sichtbar -->
+    <div class="overlay-section" id="overlaySection">
+        <div class="player-display">
+            <div class="player-name" id="player1Name">Spieler 1</div>
+            <div class="life-points" id="player1Life">8000</div>
+        </div>
+        <div class="player-display">
+            <div class="player-name" id="player2Name">Spieler 2</div>
+            <div class="life-points" id="player2Life">8000</div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+    <script>
+        // Game State
+        let gameState = {
+            player1: { name: 'Spieler 1', life: 8000 },
+            player2: { name: 'Spieler 2', life: 8000 }
+        };
+
+        // Get parameters from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const sessionId = urlParams.get('session') || Math.random().toString(36).substring(2, 10).toUpperCase();
+        const hostId = urlParams.get('host');
+
+        // Generate device ID
+        let deviceId;
+        if (localStorage.getItem('yugioh-device-id')) {
+            deviceId = localStorage.getItem('yugioh-device-id');
+        } else {
+            deviceId = Math.random().toString(36).substring(2, 10);
+            localStorage.setItem('yugioh-device-id', deviceId);
+        }
+
+        // Animation für die Lebenspunkte
+        function animateLifePoints(element, startValue, endValue, duration = 1000) {
+            if (!element) return;
+            
+            // Ensure we're working with numbers
+            startValue = parseInt(startValue);
+            endValue = parseInt(endValue);
+            
+            // If the values are the same, no need to animate
+            if (startValue === endValue) {
+                element.textContent = endValue;
+                return;
+            }
+            
+            // Track the previous value for optimization
+            element._previousValue = startValue;
+            
+            // Cancel any existing animation
+            if (element._animationFrame) {
+                cancelAnimationFrame(element._animationFrame);
+            }
+            
+            const startTime = performance.now();
+            const changeInValue = endValue - startValue;
+            
+            // Function to update the count on each animation frame
+            function updateCount(currentTime) {
+                // Calculate elapsed time
+                const elapsedTime = currentTime - startTime;
+                
+                // If we've exceeded the duration, finalize the animation
+                if (elapsedTime >= duration) {
+                    element.textContent = endValue;
+                    element._animationFrame = null;
+                    return;
+                }
+                
+                // Calculate the current value based on easing
+                const progress = elapsedTime / duration;
+                const easedProgress = easeOutQuad(progress);
+                const currentValue = Math.round(startValue + changeInValue * easedProgress);
+                
+                // Only update the DOM if the value has changed
+                if (currentValue !== element._previousValue) {
+                    element.textContent = currentValue;
+                    element._previousValue = currentValue;
+                }
+                
+                // Continue animation
+                element._animationFrame = requestAnimationFrame(updateCount);
+            }
+            
+            // Easing function for smoother animation
+            function easeOutQuad(t) {
+                return t * (2 - t);
+            }
+            
+            // Start the animation
+            element._animationFrame = requestAnimationFrame(updateCount);
+        }
+
+        function updateDisplay() {
+            // Get current display values to animate from
+            const player1LifeElement = document.getElementById('player1Life');
+            const player2LifeElement = document.getElementById('player2Life');
+            
+            const player1PrevLife = player1LifeElement.textContent || gameState.player1.life;
+            const player2PrevLife = player2LifeElement.textContent || gameState.player2.life;
+            
+            // Update names
+            document.getElementById('player1Name').textContent = gameState.player1.name;
+            document.getElementById('player2Name').textContent = gameState.player2.name;
+            
+            // Animate life points
+            animateLifePoints(player1LifeElement, player1PrevLife, gameState.player1.life, 800);
+            animateLifePoints(player2LifeElement, player2PrevLife, gameState.player2.life, 800);
+
+            // Update colors based on who's winning
+            updateLifePointsColor(1, gameState.player1.life);
+            updateLifePointsColor(2, gameState.player2.life);
+        }
+
+        function updateLifePointsColor(player, life) {
+            const element = document.getElementById(`player${player}Life`);
+            
+            const isWinning = (player === 1 && life > gameState.player2.life) || 
+                             (player === 2 && life > gameState.player1.life);
+            
+            if (isWinning && life > 0) {
+                element.classList.add('winning');
+            } else {
+                element.classList.remove('winning');
+            }
+
+            // Animation for changes
+            element.classList.add('changed');
+            setTimeout(() => element.classList.remove('changed'), 500);
+        }
+
+        function updateConnectionStatus(connected, message) {
+            const status = document.getElementById('connectionStatus');
+            if (connected) {
+                status.textContent = message || 'Verbunden';
+                status.className = 'connection-status connected';
+            } else {
+                status.textContent = message || 'Getrennt';
+                status.className = 'connection-status disconnected';
+            }
+        }
+
+        // Initialize connection
+        async function initConnection() {
+            // Setup PeerJS with better connectivity options
+            const customConfig = {
+                config: {
+                    'iceServers': [
+                        { urls: 'stun:stun.l.google.com:19302' },
+                        { urls: 'stun:stun1.l.google.com:19302' },
+                        { urls: 'stun:stun2.l.google.com:19302' },
+                    ],
+                    'sdpSemantics': 'unified-plan'
+                },
+                debug: 2
+            };
+            
+            // Create peer with unique ID for this overlay
+            const peerId = deviceId + '-' + sessionId + '-overlay';
+            const peer = new Peer(peerId, customConfig);
+            
+            peer.on('open', (id) => {
+                console.log('Overlay peer ID:', id);
+                
+                if (hostId) {
+                    updateConnectionStatus(false, 'Verbinde mit Controller...');
+                    
+                    // Connect to host with reliable options
+                    const conn = peer.connect(hostId, {
+                        reliable: true,
+                        serialization: 'json',
+                        metadata: { deviceId: deviceId, type: 'overlay' }
+                    });
+                    
+                    conn.on('open', () => {
+                        console.log('Connected to host!');
+                        updateConnectionStatus(true, 'Verbunden mit Controller');
+                        
+                        // Request current state
+                        conn.send({
+                            type: 'requestState'
+                        });
+                    });
+                    
+                    conn.on('data', (data) => {
+                        console.log('Received data:', data);
+                        if (data.type === 'gameStateUpdate') {
+                            gameState = data.gameState;
+                            updateDisplay();
+                        }
+                    });
+                    
+                    conn.on('close', () => {
+                        updateConnectionStatus(false, 'Verbindung getrennt');
+                    });
+                    
+                    conn.on('error', (err) => {
+                        console.error('Connection error:', err);
+                        updateConnectionStatus(false, 'Verbindungsfehler');
+                    });
+                } else {
+                    updateConnectionStatus(false, 'Kein Host in der URL');
+                }
+            });
+            
+            peer.on('error', (err) => {
+                console.error('PeerJS error:', err);
+                updateConnectionStatus(false, `Fehler: ${err.type}`);
+            });
+            
+            peer.on('disconnected', () => {
+                updateConnectionStatus(false, 'Getrennt - Versuche Wiederverbindung');
+                setTimeout(() => peer.reconnect(), 3000);
+            });
+        }
+
+        // Initialize when page loads
+        window.addEventListener('load', initConnection);
+    </script>
+</body>
+</html>

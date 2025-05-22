@@ -508,7 +508,9 @@
                 document.getElementById('sessionId').textContent = sessionId;
                 // Create a more robust URL with absolute path to ensure it works from any page
                 const basePath = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-                const overlayUrl = `${basePath}yugioh_life_points.html?session=${sessionId}&overlay&host=${connectionId}`;
+                
+                // Verwende die dedizierte overlay.html für bessere Streaming-Kompatibilität
+                const overlayUrl = `${basePath}overlay.html?session=${sessionId}&host=${connectionId}`;
                 document.getElementById('overlayLink').textContent = overlayUrl;
                 
                 // Add a button to copy the URL for easier sharing
@@ -871,10 +873,10 @@
 
         window.toggleOverlayMode = function() {
             if (connectionId) {
-                const url = new URL(window.location);
-                url.searchParams.set('overlay', '');
-                url.searchParams.set('host', connectionId);
-                window.open(url.toString(), '_blank');
+                // Verwende die dedizierte overlay.html für bessere Streaming-Kompatibilität
+                const basePath = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+                const overlayUrl = `${basePath}overlay.html?session=${sessionId}&host=${connectionId}`;
+                window.open(overlayUrl, '_blank');
             } else {
                 alert('Verbindung wird noch hergestellt. Bitte einen Moment warten.');
             }
