@@ -252,6 +252,10 @@
         // Make peer variable global so it can be accessed by heartbeat
         let peer = null;
         let connection = null;
+        
+        // Sound playback management
+        let userInteracted = false;
+        let soundsEnabled = true;
 
         // Log the current URL for debugging
         console.log('[Overlay] Current URL:', window.location.href);
@@ -365,9 +369,17 @@
             if (player1PrevLife !== newP1Life || player2PrevLife !== newP2Life) {
                 // Play sound with the same duration as the animation
                 if (maxChange > 0) {
-                    const pointsSound = document.getElementById('pointsSound');
-                    pointsSound.currentTime = 0;
-                    pointsSound.play().catch(e => console.error('[Overlay] Sound playback error:', e));
+                    if (soundsEnabled && userInteracted) {
+                        const pointsSound = document.getElementById('pointsSound');
+                        pointsSound.currentTime = 0;
+                        pointsSound.play().catch(e => {
+                            console.error('[Overlay] Sound playback error:', e);
+                            if (e.name === 'NotAllowedError') {
+                                console.warn('[Overlay] Sounds disabled due to browser policy until user interaction');
+                                soundsEnabled = false;
+                            }
+                        });
+                    }
                     
                     // Set a timeout to stop the sound when the animation ends
                     setTimeout(() => {
@@ -621,17 +633,33 @@
             document.getElementById('loserLP').textContent = `Gegner: ${loserLP}`;
             
             // Sound-Sequenz abspielen: lost -> win mit korrektem Timing
-            const lostSound = document.getElementById('lostSound');
-            lostSound.currentTime = 0;
-            lostSound.play().catch(e => console.error('[Overlay] Sound playback error:', e));
+            if (soundsEnabled && userInteracted) {
+                const lostSound = document.getElementById('lostSound');
+                lostSound.currentTime = 0;
+                lostSound.play().catch(e => {
+                    console.error('[Overlay] Sound playback error:', e);
+                    if (e.name === 'NotAllowedError') {
+                        console.warn('[Overlay] Sounds disabled due to browser policy until user interaction');
+                        soundsEnabled = false;
+                    }
+                });
+            }
             
             // Warte, bis der lost-Sound fertig ist (oder nach einer festgelegten Zeit), dann spiele win-Sound
             const winDelay = 1500; // Delay in ms bevor der Win-Sound startet
             
             setTimeout(() => {
-                const winSound = document.getElementById('winSound');
-                winSound.currentTime = 0;
-                winSound.play().catch(e => console.error('[Overlay] Sound playback error:', e));
+                if (soundsEnabled && userInteracted) {
+                    const winSound = document.getElementById('winSound');
+                    winSound.currentTime = 0;
+                    winSound.play().catch(e => {
+                        console.error('[Overlay] Sound playback error:', e);
+                        if (e.name === 'NotAllowedError') {
+                            console.warn('[Overlay] Sounds disabled due to browser policy until user interaction');
+                            soundsEnabled = false;
+                        }
+                    });
+                }
                 winnerScreen.classList.add('visible');
             }, winDelay);
             
@@ -640,6 +668,28 @@
                 winnerScreen.classList.remove('visible');
             }, 12000);
         }
+        
+        // Benutzerinteraktion erkennen, um Sounds freizuschalten
+        function enableSounds() {
+            userInteracted = true;
+            soundsEnabled = true;
+            console.log('[Overlay] Sounds enabled after user interaction');
+            
+            // Vorladen der Sounds für bessere Performance
+            document.getElementById('pointsSound').load();
+            document.getElementById('lostSound').load();
+            document.getElementById('winSound').load();
+            
+            // Entferne Event-Listener nach der ersten Interaktion
+            document.removeEventListener('click', enableSounds);
+            document.removeEventListener('touchstart', enableSounds);
+            document.removeEventListener('keydown', enableSounds);
+        }
+        
+        // Event-Listener für Benutzerinteraktionen
+        document.addEventListener('click', enableSounds);
+        document.addEventListener('touchstart', enableSounds);
+        document.addEventListener('keydown', enableSounds);
         
         // Initialize when page loads
         window.addEventListener('load', function() {

@@ -578,18 +578,29 @@
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
                 if (key && key.startsWith('yugioh-')) {
+                    // Ignoriere den yugioh-device-id Eintrag, der kein JSON ist
+                    if (key === 'yugioh-device-id') {
+                        continue;
+                    }
+                    
                     try {
-                        const sessionData = JSON.parse(localStorage.getItem(key));
-                        if (sessionData && sessionData._lastUpdated) {
-                            const sessionAge = now - sessionData._lastUpdated;
-                            // If session is older than 8 hours, remove it
-                            if (sessionAge > SESSION_EXPIRY_HOURS * 60 * 60 * 1000) {
-                                console.log('Removing expired session:', key);
-                                localStorage.removeItem(key);
+                        const itemValue = localStorage.getItem(key);
+                        // Überprüfe, ob der Wert wie ein JSON-Objekt aussieht
+                        if (itemValue && itemValue.startsWith('{') && itemValue.endsWith('}')) {
+                            const sessionData = JSON.parse(itemValue);
+                            if (sessionData && sessionData._lastUpdated) {
+                                const sessionAge = now - sessionData._lastUpdated;
+                                // If session is older than 8 hours, remove it
+                                if (sessionAge > SESSION_EXPIRY_HOURS * 60 * 60 * 1000) {
+                                    console.log('Removing expired session:', key);
+                                    localStorage.removeItem(key);
+                                }
                             }
                         }
                     } catch (e) {
-                        console.error('Error checking session expiry:', e);
+                        console.warn(`Skipping non-JSON item with key ${key}:`, e.message);
+                        // Optional: Entferne ungültige Einträge
+                        // localStorage.removeItem(key);
                     }
                 }
             }
