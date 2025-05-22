@@ -549,14 +549,30 @@
                             { urls: 'stun:stun.l.google.com:19302' },
                             { urls: 'stun:stun1.l.google.com:19302' },
                             { urls: 'stun:stun2.l.google.com:19302' },
+                            { urls: 'stun:stun3.l.google.com:19302' },
+                            { urls: 'stun:stun4.l.google.com:19302' },
+                            { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
+                            // TURN servers for better NAT traversal on mobile networks
+                            {
+                                urls: 'turn:openrelay.metered.ca:80',
+                                username: 'openrelayproject',
+                                credential: 'openrelayproject'
+                            },
+                            {
+                                urls: 'turn:openrelay.metered.ca:443',
+                                username: 'openrelayproject',
+                                credential: 'openrelayproject'
+                            }
                         ],
                         'sdpSemantics': 'unified-plan'
                     },
-                    debug: 2 // More detailed logging for troubleshooting
+                    debug: 3, // Highest debug level for detailed logs
+                    secure: true // Important for HTTPS pages
                 };
                 
                 // Add device ID to the peer ID to make connections more reliable
-                const peerId = deviceId + '-' + sessionId + (isOverlayMode ? '-overlay' : '-control');
+                // Use a more consistent format and remove invalid characters
+                const peerId = `ygo-${deviceId}-${sessionId}-${isOverlayMode ? 'overlay' : 'control'}`.replace(/[^a-zA-Z0-9_\-]/g, '_');
                 peer = new Peer(peerId, customConfig);
                 
                 peer.on('open', (id) => {
@@ -659,18 +675,27 @@
                 peer.on('disconnected', () => {
                     console.log('Peer disconnected');
                     updateConnectionStatus(false, 'Getrennt - Versuche Wiederverbindung...');
+                    // Try to reconnect more aggressively
                     setTimeout(() => {
-                        if (peer) peer.reconnect();
-                    }, 3000);
+                        if (peer && peer.disconnected) {
+                            console.log('Attempting to reconnect peer...');
+                            peer.reconnect();
+                        }
+                    }, 1000);
                 });
                 
-                // Extra check for connectivity - reconnect if we haven't heard anything for 30 seconds
+                // Extra check for connectivity - reconnect if we haven't heard anything for 15 seconds
                 setInterval(() => {
                     if (peer && peer.disconnected) {
                         console.log('Reconnecting peer after silence...');
                         peer.reconnect();
                     }
-                }, 30000);
+                    // Also check if connection was lost and try to reestablish
+                    if (!connection && isHost && peer && !peer.disconnected) {
+                        console.log('No active connection, but peer is connected. Waiting for new connections...');
+                        updateConnectionStatus(true, 'Bereit (warte auf Overlay)');
+                    }
+                }, 15000);
                 
             } catch (error) {
                 console.error('PeerJS setup error:', error);

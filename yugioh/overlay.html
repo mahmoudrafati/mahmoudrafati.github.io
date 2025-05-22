@@ -276,24 +276,35 @@
             console.log(`[Overlay] Attempting to connect to Host ID: ${hostId} with Session ID: ${sessionId}`);
 
             const customConfig = {
-                // host: '0.peerjs.com', // Standard PeerJS Server
-                // port: 443,
-                // path: '/',
-                secure: true, // Wichtig für HTTPS Seiten und manche Browser
-                config: {
-                    'iceServers': [
-                        { urls: 'stun:stun.l.google.com:19302' },
-                        { urls: 'stun:stun1.l.google.com:19302' },
-                        { urls: 'stun:stun2.l.google.com:19302' },
-                        { urls: 'stun:stun3.l.google.com:19302' },
-                        { urls: 'stun:stun4.l.google.com:19302' },
-                        // Fallback STUN server
-                        { urls: 'stun:global.stun.twilio.com:3478?transport=udp' }
-                    ],
-                    'sdpSemantics': 'unified-plan' // Standard für moderne Browser
+        // host: '0.peerjs.com', // Standard PeerJS Server
+        // port: 443,
+        // path: '/',
+        secure: true, // Wichtig für HTTPS Seiten und manche Browser
+        config: {
+            'iceServers': [
+                { urls: 'stun:stun.l.google.com:19302' },
+                { urls: 'stun:stun1.l.google.com:19302' },
+                { urls: 'stun:stun2.l.google.com:19302' },
+                { urls: 'stun:stun3.l.google.com:19302' },
+                { urls: 'stun:stun4.l.google.com:19302' },
+                // Fallback STUN server
+                { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
+                // TURN servers for better NAT traversal on mobile networks
+                {
+                    urls: 'turn:openrelay.metered.ca:80',
+                    username: 'openrelayproject',
+                    credential: 'openrelayproject'
                 },
-                debug: 3 // Höchstes Debug-Level für detaillierte Logs
-            };
+                {
+                    urls: 'turn:openrelay.metered.ca:443',
+                    username: 'openrelayproject',
+                    credential: 'openrelayproject'
+                }
+            ],
+            'sdpSemantics': 'unified-plan' // Standard für moderne Browser
+        },
+        debug: 3 // Höchstes Debug-Level für detaillierte Logs
+    };
             
             // Eindeutige Peer-ID für dieses Overlay-Fenster
             const peerId = `ygo-overlay-${deviceId}-${sessionId}`.replace(/[^a-zA-Z0-9_\-]/g, '_'); // Sorge für gültige Zeichen
@@ -336,8 +347,11 @@
                     conn.on('close', () => {
                         console.warn('[Overlay] Connection to host closed.');
                         updateConnectionStatus(false, 'Verbindung zum Controller geschlossen');
-                        // Optional: Versuch, die Verbindung wiederherzustellen
-                        // setTimeout(() => initConnection(), 5000); 
+                        // Automatically try to reconnect after a short delay
+                        setTimeout(() => {
+                            console.log('[Overlay] Attempting to reconnect after connection closed...');
+                            initConnection();
+                        }, 3000);
                     });
 
                     conn.on('error', (err) => {
@@ -363,9 +377,21 @@
                 peer.on('disconnected', () => {
                     console.warn('[Overlay] PeerJS disconnected from signaling server.');
                     updateConnectionStatus(false, 'Signal-Server getrennt. Versuche Reconnect...');
-                    // PeerJS versucht normalerweise automatisch, sich wieder zu verbinden.
-                    // Man könnte hier einen manuellen Reconnect-Versuch hinzufügen, falls nötig.
-                    // setTimeout(() => { if (peer && !peer.destroyed && peer.disconnected) peer.reconnect(); }, 3000);
+                    // Actively attempt to reconnect
+                    setTimeout(() => { 
+                        if (peer && !peer.destroyed && peer.disconnected) {
+                            console.log('[Overlay] Attempting to reconnect to signaling server...');
+                            peer.reconnect();
+                        }
+                    }, 1000);
+                    
+                    // If reconnection fails, try to reinitialize the connection
+                    setTimeout(() => {
+                        if (peer && peer.disconnected) {
+                            console.log('[Overlay] Reconnection to signaling server failed. Reinitializing connection...');
+                            initConnection();
+                        }
+                    }, 5000);
                 });
 
             } catch (error) {
@@ -376,6 +402,23 @@
 
         // Initialize when page loads
         window.addEventListener('load', initConnection);
+        
+        // Add heartbeat check to maintain connection on mobile devices
+        setInterval(() => {
+            console.log('[Overlay] Heartbeat check...');
+            if (peer && peer.disconnected) {
+                console.log('[Overlay] Peer disconnected during heartbeat. Attempting to reconnect...');
+                peer.reconnect();
+                
+                // If still disconnected after a second, reinitialize
+                setTimeout(() => {
+                    if (peer && peer.disconnected) {
+                        console.log('[Overlay] Peer still disconnected. Reinitializing connection...');
+                        initConnection();
+                    }
+                }, 1000);
+            }
+        }, 10000); // Check every 10 seconds
     </script>
 </body>
 </html>
