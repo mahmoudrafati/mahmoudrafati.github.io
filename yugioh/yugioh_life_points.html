@@ -543,7 +543,11 @@
             try {
                 // Initialize PeerJS with a custom configuration for better connectivity
                 const customConfig = {
-                    // Use Google's public STUN servers for better NAT traversal
+                    // Use a more reliable PeerJS server
+                    host: 'peerjs.metered.live',
+                    port: 443,
+                    path: '/',
+                    secure: true, // Important for HTTPS pages
                     config: {
                         'iceServers': [
                             { urls: 'stun:stun.l.google.com:19302' },
@@ -554,20 +558,19 @@
                             { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
                             // TURN servers for better NAT traversal on mobile networks
                             {
-                                urls: 'turn:openrelay.metered.ca:80',
-                                username: 'openrelayproject',
-                                credential: 'openrelayproject'
+                                urls: 'turn:global.turn.twilio.com:3478?transport=udp',
+                                username: 'f4b4035eaa76f4a55de5f4351567653ee4ff6fa97b50b6b334fcc1be9c27212d',
+                                credential: 'w1WpJnk0Z/JnAhj/3gzRZI/qhVs='
                             },
                             {
-                                urls: 'turn:openrelay.metered.ca:443',
-                                username: 'openrelayproject',
-                                credential: 'openrelayproject'
+                                urls: 'turn:global.turn.twilio.com:3478?transport=tcp',
+                                username: 'f4b4035eaa76f4a55de5f4351567653ee4ff6fa97b50b6b334fcc1be9c27212d',
+                                credential: 'w1WpJnk0Z/JnAhj/3gzRZI/qhVs='
                             }
                         ],
                         'sdpSemantics': 'unified-plan'
                     },
-                    debug: 3, // Highest debug level for detailed logs
-                    secure: true // Important for HTTPS pages
+                    debug: 3 // Highest debug level for detailed logs
                 };
                 
                 // Add device ID to the peer ID to make connections more reliable

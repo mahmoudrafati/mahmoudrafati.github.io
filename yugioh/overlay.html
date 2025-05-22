@@ -123,6 +123,10 @@
             player2: { name: 'Spieler 2', life: 8000 }
         };
 
+        // Make peer variable global so it can be accessed by heartbeat
+        let peer = null;
+        let connection = null;
+
         // Log the current URL for debugging
         console.log('[Overlay] Current URL:', window.location.href);
 
@@ -276,9 +280,10 @@
             console.log(`[Overlay] Attempting to connect to Host ID: ${hostId} with Session ID: ${sessionId}`);
 
             const customConfig = {
-        // host: '0.peerjs.com', // Standard PeerJS Server
-        // port: 443,
-        // path: '/',
+        // Try using the official PeerJS server
+        host: 'peerjs.metered.live', // Using a more reliable server
+        port: 443,
+        path: '/',
         secure: true, // Wichtig für HTTPS Seiten und manche Browser
         config: {
             'iceServers': [
@@ -291,14 +296,14 @@
                 { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
                 // TURN servers for better NAT traversal on mobile networks
                 {
-                    urls: 'turn:openrelay.metered.ca:80',
-                    username: 'openrelayproject',
-                    credential: 'openrelayproject'
+                    urls: 'turn:global.turn.twilio.com:3478?transport=udp',
+                    username: 'f4b4035eaa76f4a55de5f4351567653ee4ff6fa97b50b6b334fcc1be9c27212d',
+                    credential: 'w1WpJnk0Z/JnAhj/3gzRZI/qhVs='
                 },
                 {
-                    urls: 'turn:openrelay.metered.ca:443',
-                    username: 'openrelayproject',
-                    credential: 'openrelayproject'
+                    urls: 'turn:global.turn.twilio.com:3478?transport=tcp',
+                    username: 'f4b4035eaa76f4a55de5f4351567653ee4ff6fa97b50b6b334fcc1be9c27212d',
+                    credential: 'w1WpJnk0Z/JnAhj/3gzRZI/qhVs='
                 }
             ],
             'sdpSemantics': 'unified-plan' // Standard für moderne Browser
@@ -311,7 +316,8 @@
             console.log(`[Overlay] Generated Peer ID: ${peerId}`);
 
             try {
-                const peer = new Peer(peerId, customConfig);
+                // Use the global peer variable
+            peer = new Peer(peerId, customConfig);
 
                 peer.on('open', (id) => {
                     console.log(`[Overlay] PeerJS connection opened. My Peer ID is: ${id}. Ready to connect to host.`);
@@ -319,11 +325,15 @@
                     
                     // Verbindung zum Host (Controller) herstellen
                     console.log(`[Overlay] Attempting to connect to host: ${hostId}`);
-                    const conn = peer.connect(hostId, {
+                    // Use the global connection variable
+                    connection = peer.connect(hostId, {
                         reliable: true, // Stellt sicher, dass Nachrichten ankommen (TCP-ähnlich)
                         serialization: 'json', // Datenformat
                         metadata: { deviceId: deviceId, type: 'overlay', session: sessionId }
                     });
+                    
+                    // Use the connection variable instead of conn
+                    const conn = connection;
 
                     conn.on('open', () => {
                         console.log(`[Overlay] Successfully connected to host: ${conn.peer}`);
@@ -401,24 +411,72 @@
         }
 
         // Initialize when page loads
-        window.addEventListener('load', initConnection);
+        window.addEventListener('load', function() {
+            // Try connecting three times with delays to increase success chance
+            initConnection();
+            
+            // Try again after a short delay if the first attempt fails
+            setTimeout(function() {
+                if (!peer || peer.disconnected) {
+                    console.log('[Overlay] Retry connection after initial delay...');
+                    initConnection();
+                }
+            }, 2000);
+            
+            // One more attempt after a longer delay
+            setTimeout(function() {
+                if (!peer || peer.disconnected) {
+                    console.log('[Overlay] Final retry after longer delay...');
+                    initConnection();
+                }
+            }, 5000);
+        });
         
         // Add heartbeat check to maintain connection on mobile devices
-        setInterval(() => {
-            console.log('[Overlay] Heartbeat check...');
-            if (peer && peer.disconnected) {
-                console.log('[Overlay] Peer disconnected during heartbeat. Attempting to reconnect...');
-                peer.reconnect();
-                
-                // If still disconnected after a second, reinitialize
-                setTimeout(() => {
-                    if (peer && peer.disconnected) {
-                        console.log('[Overlay] Peer still disconnected. Reinitializing connection...');
-                        initConnection();
-                    }
-                }, 1000);
+        let heartbeatInterval;
+        
+        function startHeartbeat() {
+            // Clear any existing interval first
+            if (heartbeatInterval) {
+                clearInterval(heartbeatInterval);
             }
-        }, 10000); // Check every 10 seconds
+            
+            heartbeatInterval = setInterval(() => {
+                console.log('[Overlay] Heartbeat check...');
+                if (peer) {
+                    if (peer.disconnected) {
+                        console.log('[Overlay] Peer disconnected during heartbeat. Attempting to reconnect...');
+                        try {
+                            peer.reconnect();
+                        } catch (error) {
+                            console.error('[Overlay] Error reconnecting peer:', error);
+                        }
+                        
+                        // If still disconnected after a second, reinitialize
+                        setTimeout(() => {
+                            if (peer && peer.disconnected) {
+                                console.log('[Overlay] Peer still disconnected. Reinitializing connection...');
+                                initConnection();
+                            }
+                        }, 1000);
+                    } else {
+                        console.log('[Overlay] Peer connection is active');
+                        
+                        // Check if we're connected to host
+                        if (!connection) {
+                            console.log('[Overlay] No active connection to host, trying to reconnect...');
+                            initConnection();
+                        }
+                    }
+                } else {
+                    console.log('[Overlay] No peer object found, initializing connection...');
+                    initConnection();
+                }
+            }, 10000); // Check every 10 seconds
+        }
+        
+        // Start the heartbeat after initialization
+        setTimeout(startHeartbeat, 2000);
     </script>
 </body>
 </html>
