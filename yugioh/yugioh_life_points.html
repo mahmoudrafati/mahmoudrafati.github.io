@@ -5,6 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yu-Gi-Oh! Life Points</title>
     <style>
+        /* Overlay Link URL Button */
+        .copy-btn {
+            background-color: #4ecdc4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background-color: #36b1ac;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -303,14 +319,16 @@
 
         /* Status Anzeige */
         .connection-status {
-            position: fixed;
+            position: absolute;
             top: 10px;
             right: 10px;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            background: rgba(0, 0, 0, 0.8);
             z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
         }
 
         .connection-status.connected {
@@ -404,13 +422,45 @@
 
     <!-- PeerJS for P2P communication (works with GitHub Pages) -->
     <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+    <!-- Add Socket.IO as a more reliable alternative -->
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
     <script>
-        // Using PeerJS for P2P communication (works with GitHub Pages)
+        // Using free public signaling server for WebRTC connection
+        // This works better across different networks and devices
         let peer = null;
         let connection = null;
         let connectionId = null;
         let isHost = false;
         let useLocalStorage = true;
+        
+        // Session cleaning - sessions expire after 8 hours to prevent resource buildup
+        const SESSION_EXPIRY_HOURS = 8;
+        
+        // Check for expired sessions and clean them up
+        function cleanupExpiredSessions() {
+            const now = new Date().getTime();
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('yugioh-')) {
+                    try {
+                        const sessionData = JSON.parse(localStorage.getItem(key));
+                        if (sessionData && sessionData._lastUpdated) {
+                            const sessionAge = now - sessionData._lastUpdated;
+                            // If session is older than 8 hours, remove it
+                            if (sessionAge > SESSION_EXPIRY_HOURS * 60 * 60 * 1000) {
+                                console.log('Removing expired session:', key);
+                                localStorage.removeItem(key);
+                            }
+                        }
+                    } catch (e) {
+                        console.error('Error checking session expiry:', e);
+                    }
+                }
+            }
+        }
+        
+        // Run cleanup when page loads
+        cleanupExpiredSessions();
 
         // Game State
         let gameState = {
@@ -418,9 +468,18 @@
             player2: { name: 'Spieler 2', life: 8000 }
         };
 
-        // Session ID generieren oder aus URL lesen
+        // Session ID generieren oder aus URL lesen - mit Device-ID für bessere Unterscheidung
         let sessionId = new URLSearchParams(window.location.search).get('session') || 
                        Math.random().toString(36).substring(2, 10).toUpperCase();
+                       
+        // Generiere eine eindeutige ID für dieses Gerät
+        let deviceId;
+        if (localStorage.getItem('yugioh-device-id')) {
+            deviceId = localStorage.getItem('yugioh-device-id');
+        } else {
+            deviceId = Math.random().toString(36).substring(2, 10);
+            localStorage.setItem('yugioh-device-id', deviceId);
+        }
 
         // Overlay-Modus prüfen
         const isOverlayMode = new URLSearchParams(window.location.search).has('overlay');
@@ -447,8 +506,31 @@
         function updateSessionInfo() {
             if (!isOverlayMode && connectionId) {
                 document.getElementById('sessionId').textContent = sessionId;
-                const overlayUrl = `${window.location.origin}${window.location.pathname}?session=${sessionId}&overlay&host=${connectionId}`;
+                // Create a more robust URL with absolute path to ensure it works from any page
+                const basePath = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+                const overlayUrl = `${basePath}yugioh_life_points.html?session=${sessionId}&overlay&host=${connectionId}`;
                 document.getElementById('overlayLink').textContent = overlayUrl;
+                
+                // Add a button to copy the URL for easier sharing
+                if (!document.getElementById('copyLinkBtn')) {
+                    const copyBtn = document.createElement('button');
+                    copyBtn.id = 'copyLinkBtn';
+                    copyBtn.className = 'copy-btn';
+                    copyBtn.textContent = 'URL kopieren';
+                    copyBtn.onclick = function() {
+                        navigator.clipboard.writeText(overlayUrl)
+                            .then(() => {
+                                copyBtn.textContent = 'Kopiert!';
+                                setTimeout(() => {
+                                    copyBtn.textContent = 'URL kopieren';
+                                }, 2000);
+                            })
+                            .catch(err => {
+                                console.error('Fehler beim Kopieren:', err);
+                            });
+                    };
+                    document.querySelector('.overlay-link').appendChild(copyBtn);
+                }
             }
         }
 
@@ -457,8 +539,23 @@
             setupLocalStorage();
             
             try {
-                // Initialize PeerJS - a free P2P connection library
-                peer = new Peer();
+                // Initialize PeerJS with a custom configuration for better connectivity
+                const customConfig = {
+                    // Use Google's public STUN servers for better NAT traversal
+                    config: {
+                        'iceServers': [
+                            { urls: 'stun:stun.l.google.com:19302' },
+                            { urls: 'stun:stun1.l.google.com:19302' },
+                            { urls: 'stun:stun2.l.google.com:19302' },
+                        ],
+                        'sdpSemantics': 'unified-plan'
+                    },
+                    debug: 2 // More detailed logging for troubleshooting
+                };
+                
+                // Add device ID to the peer ID to make connections more reliable
+                const peerId = deviceId + '-' + sessionId + (isOverlayMode ? '-overlay' : '-control');
+                peer = new Peer(peerId, customConfig);
                 
                 peer.on('open', (id) => {
                     console.log('My peer ID is:', id);
@@ -509,8 +606,12 @@
                         // Get host ID from URL
                         const hostId = new URLSearchParams(window.location.search).get('host');
                         if (hostId) {
-                            // Connect to host
-                            const conn = peer.connect(hostId);
+                            // Connect to host with more reliable options
+                            const conn = peer.connect(hostId, {
+                                reliable: true,
+                                serialization: 'json',
+                                metadata: { deviceId: deviceId }
+                            });
                             connection = conn;
                             
                             conn.on('open', () => {
@@ -543,16 +644,32 @@
                 
                 peer.on('error', (err) => {
                     console.error('PeerJS error:', err);
-                    updateConnectionStatus(false, 'Verbindungsfehler');
+                    updateConnectionStatus(false, `Verbindungsfehler: ${err.type}`);
+                    
+                    // Specific handling for common errors
+                    if (err.type === 'peer-unavailable') {
+                        updateConnectionStatus(false, 'Host nicht erreichbar. Bitte Controller neu starten.');
+                    } else if (err.type === 'network') {
+                        updateConnectionStatus(false, 'Netzwerkprobleme. Bitte Verbindung prüfen.');
+                    }
                 });
                 
                 peer.on('disconnected', () => {
                     console.log('Peer disconnected');
-                    updateConnectionStatus(false, 'Getrennt');
+                    updateConnectionStatus(false, 'Getrennt - Versuche Wiederverbindung...');
                     setTimeout(() => {
                         if (peer) peer.reconnect();
                     }, 3000);
                 });
+                
+                // Extra check for connectivity - reconnect if we haven't heard anything for 30 seconds
+                setInterval(() => {
+                    if (peer && peer.disconnected) {
+                        console.log('Reconnecting peer after silence...');
+                        peer.reconnect();
+                    }
+                }, 30000);
+                
             } catch (error) {
                 console.error('PeerJS setup error:', error);
                 updateConnectionStatus(false, 'Fehler bei Verbindungsaufbau');
@@ -581,6 +698,9 @@
         }
 
         async function updateGameState() {
+            // Add last updated timestamp for session expiry checking
+            gameState._lastUpdated = new Date().getTime();
+            
             // Always save to localStorage
             localStorage.setItem(`yugioh-${sessionId}`, JSON.stringify(gameState));
             
@@ -593,6 +713,16 @@
                     });
                 } catch (error) {
                     console.error('P2P send error:', error);
+                    // Try to reconnect on error
+                    if (connection.peerConnection && connection.peerConnection.connectionState !== 'connected') {
+                        updateConnectionStatus(false, 'Verbindungsprobleme - Versuche Wiederverbindung');
+                        // If connection is lost, attempt to reset it
+                        setTimeout(() => {
+                            if (peer) {
+                                peer.reconnect();
+                            }
+                        }, 1000);
+                    }
                 }
             }
         }
