@@ -123,6 +123,9 @@
             player2: { name: 'Spieler 2', life: 8000 }
         };
 
+        // Log the current URL for debugging
+        console.log('[Overlay] Current URL:', window.location.href);
+
         // Get parameters from URL
         const urlParams = new URLSearchParams(window.location.search);
         const sessionId = urlParams.get('session') || Math.random().toString(36).substring(2, 10).toUpperCase();
@@ -249,76 +252,126 @@
 
         // Initialize connection
         async function initConnection() {
-            // Setup PeerJS with better connectivity options
+            console.log('[Overlay] Initializing connection...');
+            updateConnectionStatus(false, 'Initialisiere...');
+
+            if (!hostId) {
+                console.error('[Overlay] Host ID is missing from URL. Cannot connect. Full URL was:', window.location.href);
+                const errorMessage = 'Fehler: Host ID (host=...) nicht in der URL gefunden. Das Overlay kann nicht geladen werden. Bitte stellen Sie sicher, dass die vollständige URL aus der Hauptanwendung kopiert wurde (z.B. overlay.html?session=XYZ&host=ABC).';
+                updateConnectionStatus(false, 'Host ID fehlt!');
+                document.getElementById('overlaySection').style.display = 'none'; // Hide game elements
+                const errorDiv = document.createElement('div');
+                errorDiv.style.color = 'red';
+                errorDiv.style.fontSize = '20px';
+                errorDiv.style.textAlign = 'center';
+                errorDiv.style.padding = '20px';
+                errorDiv.style.border = '2px solid red';
+                errorDiv.style.margin = '20px';
+                errorDiv.style.backgroundColor = 'rgba(255, 200, 200, 0.9)';
+                errorDiv.innerHTML = `<strong>Overlay-Fehler:</strong><br>${errorMessage}<br><br>Geladene URL: ${window.location.href}`;
+                document.body.insertBefore(errorDiv, document.body.firstChild);
+                return; // Stop further execution if no hostId
+            }
+
+            console.log(`[Overlay] Attempting to connect to Host ID: ${hostId} with Session ID: ${sessionId}`);
+
             const customConfig = {
+                // host: '0.peerjs.com', // Standard PeerJS Server
+                // port: 443,
+                // path: '/',
+                secure: true, // Wichtig für HTTPS Seiten und manche Browser
                 config: {
                     'iceServers': [
                         { urls: 'stun:stun.l.google.com:19302' },
                         { urls: 'stun:stun1.l.google.com:19302' },
                         { urls: 'stun:stun2.l.google.com:19302' },
+                        { urls: 'stun:stun3.l.google.com:19302' },
+                        { urls: 'stun:stun4.l.google.com:19302' },
+                        // Fallback STUN server
+                        { urls: 'stun:global.stun.twilio.com:3478?transport=udp' }
                     ],
-                    'sdpSemantics': 'unified-plan'
+                    'sdpSemantics': 'unified-plan' // Standard für moderne Browser
                 },
-                debug: 2
+                debug: 3 // Höchstes Debug-Level für detaillierte Logs
             };
             
-            // Create peer with unique ID for this overlay
-            const peerId = deviceId + '-' + sessionId + '-overlay';
-            const peer = new Peer(peerId, customConfig);
-            
-            peer.on('open', (id) => {
-                console.log('Overlay peer ID:', id);
-                
-                if (hostId) {
-                    updateConnectionStatus(false, 'Verbinde mit Controller...');
+            // Eindeutige Peer-ID für dieses Overlay-Fenster
+            const peerId = `ygo-overlay-${deviceId}-${sessionId}`.replace(/[^a-zA-Z0-9_\-]/g, '_'); // Sorge für gültige Zeichen
+            console.log(`[Overlay] Generated Peer ID: ${peerId}`);
+
+            try {
+                const peer = new Peer(peerId, customConfig);
+
+                peer.on('open', (id) => {
+                    console.log(`[Overlay] PeerJS connection opened. My Peer ID is: ${id}. Ready to connect to host.`);
+                    updateConnectionStatus(false, `Verbinde mit Controller (ID: ${hostId.substring(0,8)}...)`);
                     
-                    // Connect to host with reliable options
+                    // Verbindung zum Host (Controller) herstellen
+                    console.log(`[Overlay] Attempting to connect to host: ${hostId}`);
                     const conn = peer.connect(hostId, {
-                        reliable: true,
-                        serialization: 'json',
-                        metadata: { deviceId: deviceId, type: 'overlay' }
+                        reliable: true, // Stellt sicher, dass Nachrichten ankommen (TCP-ähnlich)
+                        serialization: 'json', // Datenformat
+                        metadata: { deviceId: deviceId, type: 'overlay', session: sessionId }
                     });
-                    
+
                     conn.on('open', () => {
-                        console.log('Connected to host!');
+                        console.log(`[Overlay] Successfully connected to host: ${conn.peer}`);
                         updateConnectionStatus(true, 'Verbunden mit Controller');
                         
-                        // Request current state
-                        conn.send({
-                            type: 'requestState'
-                        });
+                        // Initialen Spielstatus vom Host anfordern
+                        console.log('[Overlay] Requesting initial game state from host.');
+                        conn.send({ type: 'requestState' });
                     });
-                    
+
                     conn.on('data', (data) => {
-                        console.log('Received data:', data);
+                        console.log('[Overlay] Received data from host:', data);
                         if (data.type === 'gameStateUpdate') {
                             gameState = data.gameState;
                             updateDisplay();
+                        } else {
+                            console.warn('[Overlay] Received unknown data type:', data.type);
                         }
                     });
-                    
+
                     conn.on('close', () => {
-                        updateConnectionStatus(false, 'Verbindung getrennt');
+                        console.warn('[Overlay] Connection to host closed.');
+                        updateConnectionStatus(false, 'Verbindung zum Controller geschlossen');
+                        // Optional: Versuch, die Verbindung wiederherzustellen
+                        // setTimeout(() => initConnection(), 5000); 
                     });
-                    
+
                     conn.on('error', (err) => {
-                        console.error('Connection error:', err);
-                        updateConnectionStatus(false, 'Verbindungsfehler');
+                        console.error('[Overlay] Connection error:', err);
+                        updateConnectionStatus(false, `Verbindungsfehler: ${err.type || err.message}`);
                     });
-                } else {
-                    updateConnectionStatus(false, 'Kein Host in der URL');
-                }
-            });
-            
-            peer.on('error', (err) => {
-                console.error('PeerJS error:', err);
-                updateConnectionStatus(false, `Fehler: ${err.type}`);
-            });
-            
-            peer.on('disconnected', () => {
-                updateConnectionStatus(false, 'Getrennt - Versuche Wiederverbindung');
-                setTimeout(() => peer.reconnect(), 3000);
-            });
+                });
+
+                peer.on('error', (err) => {
+                    console.error('[Overlay] PeerJS global error:', err);
+                    updateConnectionStatus(false, `Peer Fehler: ${err.type || err.message}`);
+                    if (err.type === 'unavailable-id') {
+                        console.error(`[Overlay] Peer ID ${peerId} is already taken. Trying a new one.`);
+                        // Hier könnte man versuchen, eine neue ID zu generieren und es erneut zu versuchen
+                    } else if (err.type === 'network') {
+                        console.error('[Overlay] Network error. Check internet connection and firewall.');
+                    } else if (err.type === 'peer-unavailable') {
+                         console.error(`[Overlay] Host Peer ${hostId} is unavailable.`);
+                         updateConnectionStatus(false, `Host nicht erreichbar.`);
+                    }
+                });
+
+                peer.on('disconnected', () => {
+                    console.warn('[Overlay] PeerJS disconnected from signaling server.');
+                    updateConnectionStatus(false, 'Signal-Server getrennt. Versuche Reconnect...');
+                    // PeerJS versucht normalerweise automatisch, sich wieder zu verbinden.
+                    // Man könnte hier einen manuellen Reconnect-Versuch hinzufügen, falls nötig.
+                    // setTimeout(() => { if (peer && !peer.destroyed && peer.disconnected) peer.reconnect(); }, 3000);
+                });
+
+            } catch (error) {
+                console.error('[Overlay] Failed to initialize PeerJS:', error);
+                updateConnectionStatus(false, 'PeerJS Initialisierungsfehler');
+            }
         }
 
         // Initialize when page loads
