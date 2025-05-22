@@ -543,10 +543,10 @@
             try {
                 // Initialize PeerJS with a custom configuration for better connectivity
                 const customConfig = {
-                    // Use a more reliable PeerJS server
-                    host: 'peerjs.metered.live',
-                    port: 443,
-                    path: '/',
+                    // Use default PeerJS server - this was working before
+                    // host: 'peerjs.metered.live',
+                    // port: 443,
+                    // path: '/',
                     secure: true, // Important for HTTPS pages
                     config: {
                         'iceServers': [

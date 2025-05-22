@@ -280,10 +280,10 @@
             console.log(`[Overlay] Attempting to connect to Host ID: ${hostId} with Session ID: ${sessionId}`);
 
             const customConfig = {
-        // Try using the official PeerJS server
-        host: 'peerjs.metered.live', // Using a more reliable server
-        port: 443,
-        path: '/',
+        // Using the default PeerJS server which was working before
+        // host: 'peerjs.metered.live',
+        // port: 443,
+        // path: '/',
         secure: true, // Wichtig für HTTPS Seiten und manche Browser
         config: {
             'iceServers': [
