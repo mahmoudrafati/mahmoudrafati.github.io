@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yu-Gi-Oh! Life Points</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #1a1a2e;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Overlay-Bereich */
+        .overlay-section {
+            position: relative;
+            height: 200px;
+            background: transparent;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .overlay-section.overlay-mode {
+            height: 100vh;
+            border: none;
+            background: transparent;
+        }
+
+        .player-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px 25px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            border: 2px solid #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            min-width: 200px;
+        }
+
+        .player-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .life-points {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ff6b6b;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            font-family: 'Courier New', monospace;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .life-points.winning {
+            color: #4ecdc4;
+        }
+
+        /* Bedienfeld */
+        .control-section {
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+            min-height: calc(100vh - 200px);
+        }
+
+        .control-section.hidden {
+            display: none;
+        }
+
+        .session-info {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .session-id {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
+        .overlay-link {
+            font-size: 14px;
+            color: #4ecdc4;
+            word-break: break-all;
+            margin-bottom: 15px;
+        }
+
+        .mode-toggle {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .mode-toggle:hover {
+            background: #ff5252;
+        }
+
+        .players-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .player-control {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        .player-control:hover {
+            border-color: #ffd700;
+        }
+
+        .player-control h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ffd700;
+            font-size: 24px;
+            text-transform: uppercase;
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .name-input:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+
+        .life-display {
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: #ff6b6b;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .control-btn {
+            background: #4ecdc4;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            touch-action: manipulation;
+        }
+
+        .control-btn:hover {
+            background: #45b7a8;
+            transform: scale(1.05);
+        }
+
+        .control-btn:active {
+            transform: scale(0.95);
+        }
+
+        .control-btn.minus {
+            background: #ff6b6b;
+        }
+
+        .control-btn.minus:hover {
+            background: #ff5252;
+        }
+
+        .quick-controls {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .quick-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 5px;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quick-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .reset-section {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .reset-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .reset-btn:hover {
+            background: #ff5252;
+            transform: scale(1.05);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .overlay-section {
+                padding: 15px 20px;
+                height: 150px;
+            }
+
+            .player-display {
+                min-width: 150px;
+                padding: 10px 15px;
+            }
+
+            .life-points {
+                font-size: 32px;
+            }
+
+            .player-name {
+                font-size: 14px;
+            }
+
+            .players-container {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .control-section {
+                min-height: calc(100vh - 150px);
+            }
+        }
+
+        /* Animation für Änderungen */
+        .life-points {
+            transition: all 0.3s ease;
+        }
+
+        .life-points.changed {
+            animation: pulse 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Status Anzeige */
+        .connection-status {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 1000;
+        }
+
+        .connection-status.connected {
+            background: #4ecdc4;
+            color: white;
+        }
+
+        .connection-status.disconnected {
+            background: #ff6b6b;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Verbindungsstatus -->
+    <div class="connection-status" id="connectionStatus">Verbinde...</div>
+
+    <!-- Overlay-Bereich -->
+    <div class="overlay-section" id="overlaySection" style="opacity: 0.95;">
+        <div class="player-display">
+            <div class="player-name" id="player1Name">Spieler 1</div>
+            <div class="life-points" id="player1Life">8000</div>
+        </div>
+        <div class="player-display">
+            <div class="player-name" id="player2Name">Spieler 2</div>
+            <div class="life-points" id="player2Life">8000</div>
+        </div>
+    </div>
+
+    <!-- Bedienfeld -->
+    <div class="control-section" id="controlSection">
+        <!-- Session Info -->
+        <div class="session-info">
+            <div class="session-id">Session: <span id="sessionId"></span></div>
+            <div class="overlay-link">Overlay-Link: <span id="overlayLink"></span></div>
+            <button class="mode-toggle" onclick="toggleOverlayMode()">Nur Overlay anzeigen</button>
+        </div>
+
+        <!-- Spieler-Bedienelemente -->
+        <div class="players-container">
+            <!-- Spieler 1 -->
+            <div class="player-control">
+                <h3>Spieler 1</h3>
+                <input type="text" class="name-input" id="player1NameInput" placeholder="Name eingeben..." 
+                       oninput="updatePlayerName(1, this.value)">
+                <div class="life-display" id="player1LifeControl">8000</div>
+                
+                <div class="controls">
+                    <button class="control-btn minus" onclick="changeLife(1, -1000)">-1000</button>
+                    <button class="control-btn" onclick="changeLife(1, 1000)">+1000</button>
+                    <button class="control-btn minus" onclick="changeLife(1, -500)">-500</button>
+                    <button class="control-btn" onclick="changeLife(1, 500)">+500</button>
+                </div>
+                
+                <div class="quick-controls">
+                    <button class="quick-btn" onclick="changeLife(1, -100)">-100</button>
+                    <button class="quick-btn" onclick="changeLife(1, -50)">-50</button>
+                    <button class="quick-btn" onclick="changeLife(1, 50)">+50</button>
+                    <button class="quick-btn" onclick="changeLife(1, 100)">+100</button>
+                </div>
+            </div>
+
+            <!-- Spieler 2 -->
+            <div class="player-control">
+                <h3>Spieler 2</h3>
+                <input type="text" class="name-input" id="player2NameInput" placeholder="Name eingeben..." 
+                       oninput="updatePlayerName(2, this.value)">
+                <div class="life-display" id="player2LifeControl">8000</div>
+                
+                <div class="controls">
+                    <button class="control-btn minus" onclick="changeLife(2, -1000)">-1000</button>
+                    <button class="control-btn" onclick="changeLife(2, 1000)">+1000</button>
+                    <button class="control-btn minus" onclick="changeLife(2, -500)">-500</button>
+                    <button class="control-btn" onclick="changeLife(2, 500)">+500</button>
+                </div>
+                
+                <div class="quick-controls">
+                    <button class="quick-btn" onclick="changeLife(2, -100)">-100</button>
+                    <button class="quick-btn" onclick="changeLife(2, -50)">-50</button>
+                    <button class="quick-btn" onclick="changeLife(2, 50)">+50</button>
+                    <button class="quick-btn" onclick="changeLife(2, 100)">+100</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reset-Bereich -->
+        <div class="reset-section">
+            <button class="reset-btn" onclick="resetGame()">Spiel zurücksetzen (8000 LP)</button>
+        </div>
+    </div>
+
+    <!-- PeerJS for P2P communication (works with GitHub Pages) -->
+    <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+    <script>
+        // Using PeerJS for P2P communication (works with GitHub Pages)
+        let peer = null;
+        let connection = null;
+        let connectionId = null;
+        let isHost = false;
+        let useLocalStorage = true;
+
+        // Game State
+        let gameState = {
+            player1: { name: 'Spieler 1', life: 8000 },
+            player2: { name: 'Spieler 2', life: 8000 }
+        };
+
+        // Session ID generieren oder aus URL lesen
+        let sessionId = new URLSearchParams(window.location.search).get('session') || 
+                       Math.random().toString(36).substring(2, 10).toUpperCase();
+
+        // Overlay-Modus prüfen
+        const isOverlayMode = new URLSearchParams(window.location.search).has('overlay');
+
+        // Initialisierung
+        window.addEventListener('load', initApp);
+
+        async function initApp() {
+            setupOverlayMode();
+            updateSessionInfo();
+            await setupDatabase();
+            updateDisplay();
+        }
+
+        function setupOverlayMode() {
+            if (isOverlayMode) {
+                document.getElementById('controlSection').classList.add('hidden');
+                document.getElementById('overlaySection').classList.add('overlay-mode');
+                document.getElementById('connectionStatus').style.display = 'none';
+                document.body.style.background = 'transparent';
+            }
+        }
+
+        function updateSessionInfo() {
+            if (!isOverlayMode && connectionId) {
+                document.getElementById('sessionId').textContent = sessionId;
+                const overlayUrl = `${window.location.origin}${window.location.pathname}?session=${sessionId}&overlay&host=${connectionId}`;
+                document.getElementById('overlayLink').textContent = overlayUrl;
+            }
+        }
+
+        async function setupDatabase() {
+            // Use localStorage as the primary storage method
+            setupLocalStorage();
+            
+            try {
+                // Initialize PeerJS - a free P2P connection library
+                peer = new Peer();
+                
+                peer.on('open', (id) => {
+                    console.log('My peer ID is:', id);
+                    
+                    // For control panel, we're the host
+                    if (!isOverlayMode) {
+                        isHost = true;
+                        connectionId = id;
+                        
+                        // Update the overlay link to include our peer ID
+                        updateSessionInfo();
+                        updateConnectionStatus(true, 'Bereit (warte auf Overlay)');
+                        
+                        // Listen for incoming connections from overlay
+                        peer.on('connection', (conn) => {
+                            console.log('Overlay connected!', conn);
+                            connection = conn;
+                            
+                            // Handle incoming data from overlay
+                            conn.on('data', (data) => {
+                                console.log('Received data:', data);
+                                if (data.type === 'requestState') {
+                                    // Send current state to overlay
+                                    conn.send({
+                                        type: 'gameStateUpdate',
+                                        gameState: gameState
+                                    });
+                                }
+                            });
+                            
+                            conn.on('open', () => {
+                                updateConnectionStatus(true, 'Verbunden mit Overlay');
+                                // Send initial state
+                                conn.send({
+                                    type: 'gameStateUpdate',
+                                    gameState: gameState
+                                });
+                            });
+                            
+                            conn.on('close', () => {
+                                updateConnectionStatus(true, 'Getrennt - Warte auf Overlay');
+                                connection = null;
+                            });
+                        });
+                    } 
+                    // For overlay view, we connect to the host
+                    else {
+                        // Get host ID from URL
+                        const hostId = new URLSearchParams(window.location.search).get('host');
+                        if (hostId) {
+                            // Connect to host
+                            const conn = peer.connect(hostId);
+                            connection = conn;
+                            
+                            conn.on('open', () => {
+                                console.log('Connected to host!', conn);
+                                updateConnectionStatus(true, 'Verbunden mit Controller');
+                                
+                                // Request current state
+                                conn.send({
+                                    type: 'requestState'
+                                });
+                            });
+                            
+                            conn.on('data', (data) => {
+                                console.log('Received data from host:', data);
+                                if (data.type === 'gameStateUpdate') {
+                                    gameState = data.gameState;
+                                    updateDisplay();
+                                }
+                            });
+                            
+                            conn.on('close', () => {
+                                updateConnectionStatus(false, 'Verbindung getrennt');
+                                connection = null;
+                            });
+                        } else {
+                            updateConnectionStatus(false, 'Kein Host-Parameter!');
+                        }
+                    }
+                });
+                
+                peer.on('error', (err) => {
+                    console.error('PeerJS error:', err);
+                    updateConnectionStatus(false, 'Verbindungsfehler');
+                });
+                
+                peer.on('disconnected', () => {
+                    console.log('Peer disconnected');
+                    updateConnectionStatus(false, 'Getrennt');
+                    setTimeout(() => {
+                        if (peer) peer.reconnect();
+                    }, 3000);
+                });
+            } catch (error) {
+                console.error('PeerJS setup error:', error);
+                updateConnectionStatus(false, 'Fehler bei Verbindungsaufbau');
+            }
+        }
+
+        function setupLocalStorage() {
+            // Fallback für lokale Tests
+            const saved = localStorage.getItem(`yugioh-${sessionId}`);
+            if (saved) {
+                gameState = JSON.parse(saved);
+            }
+            updateConnectionStatus(false);
+            updateDisplay();
+        }
+
+        function updateConnectionStatus(connected, message) {
+            const status = document.getElementById('connectionStatus');
+            if (connected) {
+                status.textContent = message || 'Verbunden';
+                status.className = 'connection-status connected';
+            } else {
+                status.textContent = message || 'Lokal';
+                status.className = 'connection-status disconnected';
+            }
+        }
+
+        async function updateGameState() {
+            // Always save to localStorage
+            localStorage.setItem(`yugioh-${sessionId}`, JSON.stringify(gameState));
+            
+            // If we're the host and connected to an overlay, send update
+            if (isHost && connection && connection.open) {
+                try {
+                    connection.send({
+                        type: 'gameStateUpdate',
+                        gameState: gameState
+                    });
+                } catch (error) {
+                    console.error('P2P send error:', error);
+                }
+            }
+        }
+
+        // Animation für die Lebenspunkte
+        function animateLifePoints(element, startValue, endValue, duration = 1000) {
+            if (!element) return;
+            
+            // Ensure we're working with numbers
+            startValue = parseInt(startValue);
+            endValue = parseInt(endValue);
+            
+            // If the values are the same, no need to animate
+            if (startValue === endValue) {
+                element.textContent = endValue;
+                return;
+            }
+            
+            // Track the previous value for optimization
+            element._previousValue = startValue;
+            
+            // Cancel any existing animation
+            if (element._animationFrame) {
+                cancelAnimationFrame(element._animationFrame);
+            }
+            
+            const startTime = performance.now();
+            const changeInValue = endValue - startValue;
+            
+            // Function to update the count on each animation frame
+            function updateCount(currentTime) {
+                // Calculate elapsed time
+                const elapsedTime = currentTime - startTime;
+                
+                // If we've exceeded the duration, finalize the animation
+                if (elapsedTime >= duration) {
+                    element.textContent = endValue;
+                    element._animationFrame = null;
+                    return;
+                }
+                
+                // Calculate the current value based on easing
+                const progress = elapsedTime / duration;
+                const easedProgress = easeOutQuad(progress);
+                const currentValue = Math.round(startValue + changeInValue * easedProgress);
+                
+                // Only update the DOM if the value has changed
+                if (currentValue !== element._previousValue) {
+                    element.textContent = currentValue;
+                    element._previousValue = currentValue;
+                }
+                
+                // Continue animation
+                element._animationFrame = requestAnimationFrame(updateCount);
+            }
+            
+            // Easing function for smoother animation
+            function easeOutQuad(t) {
+                return t * (2 - t);
+            }
+            
+            // Start the animation
+            element._animationFrame = requestAnimationFrame(updateCount);
+        }
+        
+        function updateDisplay() {
+            // Get current display values to animate from
+            const player1LifeElement = document.getElementById('player1Life');
+            const player2LifeElement = document.getElementById('player2Life');
+            
+            const player1PrevLife = player1LifeElement.textContent || gameState.player1.life;
+            const player2PrevLife = player2LifeElement.textContent || gameState.player2.life;
+            
+            // Update names (no animation needed)
+            document.getElementById('player1Name').textContent = gameState.player1.name;
+            document.getElementById('player2Name').textContent = gameState.player2.name;
+            
+            // Animate life points
+            animateLifePoints(player1LifeElement, player1PrevLife, gameState.player1.life, 800);
+            animateLifePoints(player2LifeElement, player2PrevLife, gameState.player2.life, 800);
+
+            // Bedienfeld-Anzeige (control panel - no animation needed)
+            if (!isOverlayMode) {
+                document.getElementById('player1NameInput').value = gameState.player1.name;
+                // Update control display without animation
+                const p1LifeControl = document.getElementById('player1LifeControl');
+                if (p1LifeControl) p1LifeControl.textContent = gameState.player1.life;
+                
+                document.getElementById('player2NameInput').value = gameState.player2.name;
+                const p2LifeControl = document.getElementById('player2LifeControl');
+                if (p2LifeControl) p2LifeControl.textContent = gameState.player2.life;
+            }
+
+            // Farbe basierend auf Life Points
+            updateLifePointsColor(1, gameState.player1.life);
+            updateLifePointsColor(2, gameState.player2.life);
+        }
+
+        function updateLifePointsColor(player, life) {
+            const overlayElement = document.getElementById(`player${player}Life`);
+            const controlElement = document.getElementById(`player${player}LifeControl`);
+            
+            const isWinning = (player === 1 && life > gameState.player2.life) || 
+                             (player === 2 && life > gameState.player1.life);
+            
+            if (isWinning && life > 0) {
+                overlayElement.classList.add('winning');
+                if (controlElement) controlElement.classList.add('winning');
+            } else {
+                overlayElement.classList.remove('winning');
+                if (controlElement) controlElement.classList.remove('winning');
+            }
+
+            // Animation für Änderungen
+            overlayElement.classList.add('changed');
+            setTimeout(() => overlayElement.classList.remove('changed'), 500);
+            
+            if (controlElement) {
+                controlElement.classList.add('changed');
+                setTimeout(() => controlElement.classList.remove('changed'), 500);
+            }
+        }
+
+        // Globale Funktionen für HTML onclick Events
+        window.changeLife = async function(player, amount) {
+            console.log(`Changing player ${player} life by ${amount}`);
+            const key = `player${player}`;
+            gameState[key].life = Math.max(0, gameState[key].life + amount);
+            await updateGameState();
+            updateDisplay();
+        };
+
+        window.updatePlayerName = async function(player, name) {
+            const key = `player${player}`;
+            gameState[key].name = name || `Spieler ${player}`;
+            await updateGameState();
+            updateDisplay();
+        };
+
+        window.resetGame = async function() {
+            gameState.player1.life = 8000;
+            gameState.player2.life = 8000;
+            await updateGameState();
+            updateDisplay();
+        };
+
+        window.toggleOverlayMode = function() {
+            if (connectionId) {
+                const url = new URL(window.location);
+                url.searchParams.set('overlay', '');
+                url.searchParams.set('host', connectionId);
+                window.open(url.toString(), '_blank');
+            } else {
+                alert('Verbindung wird noch hergestellt. Bitte einen Moment warten.');
+            }
+        };
+
+        // Touch-Gesten für mobile Geräte
+        let touchStartY = 0;
+        
+        document.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            const touchEndY = e.changedTouches[0].clientY;
+            const diff = touchStartY - touchEndY;
+            
+            if (Math.abs(diff) > 50) { // Mindest-Swipe-Distanz
+                const target = e.target.closest('.player-control');
+                if (target) {
+                    const player = target.querySelector('h3').textContent.includes('1') ? 1 : 2;
+                    const amount = diff > 0 ? -100 : 100; // Swipe up = -100, Swipe down = +100
+                    changeLife(player, amount);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
