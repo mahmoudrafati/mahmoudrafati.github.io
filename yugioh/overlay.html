@@ -332,34 +332,77 @@
         }
 
         function updateDisplay() {
-            // Vorherige Lebenspunkte speichern, um Änderungen zu erkennen
-            const prevP1Life = parseInt(document.getElementById('player1Life').textContent);
-            const prevP2Life = parseInt(document.getElementById('player2Life').textContent);
+            // Get current display values to animate from
+            const player1LifeElement = document.getElementById('player1Life');
+            const player2LifeElement = document.getElementById('player2Life');
             
-            // Update player names and life points in overlay
+            const player1PrevLife = parseInt(player1LifeElement.textContent) || gameState.player1.life;
+            const player2PrevLife = parseInt(player2LifeElement.textContent) || gameState.player2.life;
+            
+            // Update names
             document.getElementById('player1Name').textContent = gameState.player1.name;
-            document.getElementById('player1Life').textContent = gameState.player1.life;
             document.getElementById('player2Name').textContent = gameState.player2.name;
-            document.getElementById('player2Life').textContent = gameState.player2.life;
-
+            
             // Prüfe auf Lebensänderungen und spiele Soundeffekte
             const newP1Life = gameState.player1.life;
             const newP2Life = gameState.player2.life;
             
-            if (prevP1Life !== newP1Life || prevP2Life !== newP2Life) {
-                // Spiele Punkteänderungs-Sound ab
-                playSound('pointsSound');
-                
-                // Prüfe auf Spielende (wenn ein Spieler 0 LP hat)
-                if (newP1Life === 0 || newP2Life === 0) {
-                    // Warte kurz und zeige dann den Gewinner-Bildschirm an
+            const p1Change = Math.abs(player1PrevLife - newP1Life);
+            const p2Change = Math.abs(player2PrevLife - newP2Life);
+            const maxChange = Math.max(p1Change, p2Change);
+            
+            // Calculate animation duration based on the magnitude of change
+            // Larger changes take longer to animate
+            let animDuration = 800; // Base duration
+            if (maxChange > 1000) {
+                animDuration = 1500;
+            } else if (maxChange > 500) {
+                animDuration = 1200;
+            } else if (maxChange > 100) {
+                animDuration = 1000;
+            }
+            
+            if (player1PrevLife !== newP1Life || player2PrevLife !== newP2Life) {
+                // Play sound with the same duration as the animation
+                if (maxChange > 0) {
+                    const pointsSound = document.getElementById('pointsSound');
+                    pointsSound.currentTime = 0;
+                    pointsSound.play().catch(e => console.error('[Overlay] Sound playback error:', e));
+                    
+                    // Set a timeout to stop the sound when the animation ends
                     setTimeout(() => {
-                        showWinnerScreen();
-                    }, 1500);
+                        // Fade out the sound over the last 200ms of the animation
+                        const fadeOutDuration = 200;
+                        const fadeOutInterval = 10;
+                        const fadeOutSteps = fadeOutDuration / fadeOutInterval;
+                        const fadeOutAmount = 1 / fadeOutSteps;
+                        
+                        const fadeOutTimer = setInterval(() => {
+                            if (pointsSound.volume > fadeOutAmount) {
+                                pointsSound.volume -= fadeOutAmount;
+                            } else {
+                                pointsSound.pause();
+                                pointsSound.volume = 1.0; // Reset volume for next time
+                                clearInterval(fadeOutTimer);
+                            }
+                        }, fadeOutInterval);
+                    }, animDuration - 200);
+                    
+                    // Check for game end (when a player has 0 LP)
+                    if (newP1Life === 0 || newP2Life === 0) {
+                        // Wait until after the animation completes to show the winner screen
+                        setTimeout(() => {
+                            showWinnerScreen();
+                        }, animDuration + 300);
+                    }
                 }
             }
+            
+            // Animate life points changes
+            animateLifePoints(player1LifeElement, player1PrevLife, newP1Life, animDuration);
+            animateLifePoints(player2LifeElement, player2PrevLife, newP2Life, animDuration);
 
-            // Farbe basierend auf Life Points
+            // Update colors based on who's winning
             updateLifePointsColor(1, gameState.player1.life);
             updateLifePointsColor(2, gameState.player2.life);
         }
@@ -577,18 +620,25 @@
             document.getElementById('winnerLP').textContent = `Lebenspunkte: ${winnerLP}`;
             document.getElementById('loserLP').textContent = `Gegner: ${loserLP}`;
             
-            // Sound-Sequenz abspielen: points -> lost -> win
-            playSound('lostSound');
+            // Sound-Sequenz abspielen: lost -> win mit korrektem Timing
+            const lostSound = document.getElementById('lostSound');
+            lostSound.currentTime = 0;
+            lostSound.play().catch(e => console.error('[Overlay] Sound playback error:', e));
+            
+            // Warte, bis der lost-Sound fertig ist (oder nach einer festgelegten Zeit), dann spiele win-Sound
+            const winDelay = 1500; // Delay in ms bevor der Win-Sound startet
             
             setTimeout(() => {
-                playSound('winSound');
+                const winSound = document.getElementById('winSound');
+                winSound.currentTime = 0;
+                winSound.play().catch(e => console.error('[Overlay] Sound playback error:', e));
                 winnerScreen.classList.add('visible');
-            }, 1500);
+            }, winDelay);
             
             // Optional: Schließen des Gewinner-Bildschirms nach einer Weile
             setTimeout(() => {
                 winnerScreen.classList.remove('visible');
-            }, 10000);
+            }, 12000);
         }
         
         // Initialize when page loads
