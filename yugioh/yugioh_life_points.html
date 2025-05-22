@@ -21,6 +21,32 @@
         .copy-btn:hover {
             background-color: #36b1ac;
         }
+        
+        /* Tischmodus Button */
+        .table-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ffd700;
+            color: #333;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            z-index: 1000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .table-mode-toggle:hover {
+            transform: scale(1.1);
+            background-color: #ffcc00;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -340,6 +366,104 @@
             background: #ff6b6b;
             color: white;
         }
+        
+        /* Tischmodus Styles */
+        body.table-mode {
+            overflow: hidden;
+        }
+        
+        body.table-mode .overlay-section {
+            height: auto;
+            padding: 10px;
+        }
+        
+        body.table-mode .control-section {
+            padding: 0;
+            min-height: auto;
+        }
+        
+        body.table-mode .players-container {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+        
+        body.table-mode .session-info {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            margin: 0;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 900;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+        
+        body.table-mode .session-info.visible {
+            transform: translateY(0);
+        }
+        
+        body.table-mode .info-toggle {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 20px;
+            background: #ffd700;
+            border-radius: 0 0 20px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 901;
+        }
+        
+        body.table-mode .info-toggle:after {
+            content: '⌄';
+            font-size: 16px;
+            line-height: 1;
+            color: #333;
+        }
+        
+        body.table-mode .session-info.visible + .info-toggle:after {
+            content: '⌃';
+        }
+        
+        body.table-mode .player-control {
+            border-radius: 0;
+            margin: 0;
+            padding: 15px;
+        }
+        
+        body.table-mode .player-control.flipped {
+            transform: rotate(180deg);
+        }
+        
+        /* Neuanordnung der Lebenspunkte-Anzeige im Tischmodus */
+        body.table-mode .life-display {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        body.table-mode .life-points-control {
+            font-size: 36px;
+            flex: 0 0 auto;
+            min-width: 100px;
+            text-align: center;
+        }
+        
+        body.table-mode .controls-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 5px;
+            flex: 1;
+        }
     </style>
 </head>
 <body>
@@ -360,56 +484,68 @@
 
     <!-- Bedienfeld -->
     <div class="control-section" id="controlSection">
-        <!-- Session Info -->
-        <div class="session-info">
+        <!-- Session Info - wird im Tischmodus als Overlay angezeigt -->
+        <div class="session-info" id="sessionInfo">
             <div class="session-id">Session: <span id="sessionId"></span></div>
             <div class="overlay-link">Overlay-Link: <span id="overlayLink"></span></div>
             <button class="mode-toggle" onclick="toggleOverlayMode()">Nur Overlay anzeigen</button>
         </div>
+        <div class="info-toggle" id="infoToggle" style="display: none;"></div>
+        
+        <!-- Tischmodus-Button -->
+        <button class="table-mode-toggle" id="tableModeToggle">⟲</button>
 
         <!-- Spieler-Bedienelemente -->
         <div class="players-container">
             <!-- Spieler 1 -->
-            <div class="player-control">
+            <div class="player-control" id="player1Control">
                 <h3>Spieler 1</h3>
                 <input type="text" class="name-input" id="player1NameInput" placeholder="Name eingeben..." 
-                       oninput="updatePlayerName(1, this.value)">
-                <div class="life-display" id="player1LifeControl">8000</div>
-                
-                <div class="controls">
-                    <button class="control-btn minus" onclick="changeLife(1, -1000)">-1000</button>
-                    <button class="control-btn" onclick="changeLife(1, 1000)">+1000</button>
-                    <button class="control-btn minus" onclick="changeLife(1, -500)">-500</button>
-                    <button class="control-btn" onclick="changeLife(1, 500)">+500</button>
-                </div>
-                
-                <div class="quick-controls">
-                    <button class="quick-btn" onclick="changeLife(1, -100)">-100</button>
-                    <button class="quick-btn" onclick="changeLife(1, -50)">-50</button>
-                    <button class="quick-btn" onclick="changeLife(1, 50)">+50</button>
-                    <button class="quick-btn" onclick="changeLife(1, 100)">+100</button>
+                    oninput="updatePlayerName(1, this.value)">
+                <div class="life-display">
+                    <div class="life-points-control" id="player1LifeControl">8000</div>
+                    <div class="controls-container">
+                        <div class="controls">
+                            <button class="control-btn minus" onclick="changeLife(1, -1000)">-1000</button>
+                            <button class="control-btn plus" onclick="changeLife(1, 1000)">+1000</button>
+                        </div>
+                        <div class="controls">
+                            <button class="control-btn minus" onclick="changeLife(1, -500)">-500</button>
+                            <button class="control-btn plus" onclick="changeLife(1, 500)">+500</button>
+                        </div>
+                        <div class="quick-controls">
+                            <button class="quick-btn" onclick="changeLife(1, -100)">-100</button>
+                            <button class="quick-btn" onclick="changeLife(1, -50)">-50</button>
+                            <button class="quick-btn" onclick="changeLife(1, 50)">+50</button>
+                            <button class="quick-btn" onclick="changeLife(1, 100)">+100</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Spieler 2 -->
-            <div class="player-control">
+            <div class="player-control" id="player2Control">
                 <h3>Spieler 2</h3>
                 <input type="text" class="name-input" id="player2NameInput" placeholder="Name eingeben..." 
-                       oninput="updatePlayerName(2, this.value)">
-                <div class="life-display" id="player2LifeControl">8000</div>
-                
-                <div class="controls">
-                    <button class="control-btn minus" onclick="changeLife(2, -1000)">-1000</button>
-                    <button class="control-btn" onclick="changeLife(2, 1000)">+1000</button>
-                    <button class="control-btn minus" onclick="changeLife(2, -500)">-500</button>
-                    <button class="control-btn" onclick="changeLife(2, 500)">+500</button>
-                </div>
-                
-                <div class="quick-controls">
-                    <button class="quick-btn" onclick="changeLife(2, -100)">-100</button>
-                    <button class="quick-btn" onclick="changeLife(2, -50)">-50</button>
-                    <button class="quick-btn" onclick="changeLife(2, 50)">+50</button>
-                    <button class="quick-btn" onclick="changeLife(2, 100)">+100</button>
+                    oninput="updatePlayerName(2, this.value)">
+                <div class="life-display">
+                    <div class="life-points-control" id="player2LifeControl">8000</div>
+                    <div class="controls-container">
+                        <div class="controls">
+                            <button class="control-btn minus" onclick="changeLife(2, -1000)">-1000</button>
+                            <button class="control-btn plus" onclick="changeLife(2, 1000)">+1000</button>
+                        </div>
+                        <div class="controls">
+                            <button class="control-btn minus" onclick="changeLife(2, -500)">-500</button>
+                            <button class="control-btn plus" onclick="changeLife(2, 500)">+500</button>
+                        </div>
+                        <div class="quick-controls">
+                            <button class="quick-btn" onclick="changeLife(2, -100)">-100</button>
+                            <button class="quick-btn" onclick="changeLife(2, -50)">-50</button>
+                            <button class="quick-btn" onclick="changeLife(2, 50)">+50</button>
+                            <button class="quick-btn" onclick="changeLife(2, 100)">+100</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -923,6 +1059,47 @@
                     const amount = diff > 0 ? -100 : 100; // Swipe up = -100, Swipe down = +100
                     changeLife(player, amount);
                 }
+            }
+        });
+        
+        // Tischmodus Funktionalität
+        function toggleTableMode() {
+            const body = document.body;
+            const sessionInfo = document.getElementById('sessionInfo');
+            const infoToggle = document.getElementById('infoToggle');
+            const player2Control = document.getElementById('player2Control');
+            
+            body.classList.toggle('table-mode');
+            
+            if (body.classList.contains('table-mode')) {
+                // Aktiviere Tischmodus
+                sessionInfo.classList.remove('visible');
+                infoToggle.style.display = 'flex';
+                player2Control.classList.add('flipped');
+            } else {
+                // Deaktiviere Tischmodus
+                sessionInfo.classList.remove('visible');
+                infoToggle.style.display = 'none';
+                player2Control.classList.remove('flipped');
+            }
+        }
+        
+        // Toggle Session-Info im Tischmodus
+        function toggleSessionInfo() {
+            if (document.body.classList.contains('table-mode')) {
+                document.getElementById('sessionInfo').classList.toggle('visible');
+            }
+        }
+        
+        // Event-Listener für Tischmodus
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('tableModeToggle').addEventListener('click', toggleTableMode);
+            document.getElementById('infoToggle').addEventListener('click', toggleSessionInfo);
+            
+            // Prüfe, ob auf einem Mobilgerät geöffnet
+            if (window.innerWidth <= 768) {
+                // Optional: Automatisch Tischmodus aktivieren auf mobilen Geräten
+                // toggleTableMode();
             }
         });
     </script>
