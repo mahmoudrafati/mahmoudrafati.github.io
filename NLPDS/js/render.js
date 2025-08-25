@@ -593,10 +593,12 @@ function renderQuestionCard(question) {
                 <h3 class="text-lg font-medium text-gray-900 mb-3">Ihre Antwort</h3>
                 
                 <div class="space-y-4">
-                    <textarea id="user-answer" 
-                              placeholder="Geben Sie hier Ihre Antwort ein..."
-                              rows="8"
-                              class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-y"></textarea>
+                    ${(question.type && (question.type.startsWith('mc_') || question.type === 'multiple_choice')) || (Array.isArray(question.options) && question.options.length > 0) ? renderMCOptions(question) : `
+                    <textarea id=\"user-answer\" 
+                              placeholder=\"Geben Sie hier Ihre Antwort ein...\"
+                              rows=\"8\"
+                              class=\"w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-y\"></textarea>
+                    `}
                     
                     <div class="flex flex-wrap gap-2">
                         <button id="check-answer" class="bg-primary-600 text-white py-2 px-4 rounded-lg hover:bg-primary-700 font-medium">
@@ -669,6 +671,36 @@ function renderQuestionCard(question) {
                     </div>
                 </div>
             </div>
+        </div>
+    `;
+}
+
+/**
+ * Rendert Multiple-Choice Optionen (Radio/Checkbox)
+ * Erwartet question.options als Array von Strings. Optional: question.correct_options als Array von korrekten Labels/Indices.
+ * @param {object} question
+ * @returns {string}
+ */
+function renderMCOptions(question) {
+    const isMulti = question.type === 'mc_check';
+    const inputType = isMulti ? 'checkbox' : 'radio';
+    const name = `mc-${question.id}`;
+    const options = Array.isArray(question.options) && question.options.length > 0
+        ? question.options
+        : [];
+    const labels = options.length === 0 ? [] : options.map((opt, idx) => {
+        const letter = String.fromCharCode(65 + idx); // A,B,C,...
+        return { value: letter, text: opt.text || opt.label || opt };
+    });
+    return `
+        <div id="mc-container" class="space-y-2">
+            ${labels.map(({ value, text }) => `
+                <label class="flex items-start space-x-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+                    <input type="${inputType}" name="${name}" value="${value}" class="mt-1 mc-input rounded">
+                    <span><strong>${value})</strong> ${escapeHtml(String(text))}</span>
+                </label>
+            `).join('')}
+            <textarea id="user-answer" style="display:none"></textarea>
         </div>
     `;
 }
@@ -1195,7 +1227,9 @@ function formatType(type) {
         'offene_frage': 'Offene Frage',
         'rechenaufgabe': 'Rechenaufgabe',
         'definition': 'Definition',
-        'bildbasierte_frage': 'Bildbasierte Frage'
+        'bildbasierte_frage': 'Bildbasierte Frage',
+        'mc_radio': 'Multiple Choice (Single)',
+        'mc_check': 'Multiple Choice (Mehrfach)'
     };
     return typeMap[type] || type;
 }

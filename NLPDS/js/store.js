@@ -219,6 +219,7 @@ function normalizeQuestion(question) {
         math_blocks: Array.isArray(question.math_blocks) ? question.math_blocks : [],
         images: Array.isArray(question.images) ? question.images : [],
         options: Array.isArray(question.options) ? question.options : [],
+        correct_options: Array.isArray(question.correct_options) ? question.correct_options : [],
         given_answer: question.given_answer || '',
         verified: Boolean(question.verified),
         notes: question.notes || '',

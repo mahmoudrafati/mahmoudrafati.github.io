@@ -23,6 +23,46 @@ import {
  * @returns {object} Evaluation result
  */
 export function evaluateAnswer(userAnswer, question, options = {}) {
+    // Multiple-choice shortcut mode
+    if (options.mode === 'multiple_choice' || (question.type && question.type.startsWith('mc_'))) {
+        const isMulti = question.type === 'mc_check';
+        // Accept either explicit correct_options field (array of letters or indices) or parse from given_answer like "Correct: B" or "Correct: B,C"
+        let correct = [];
+        if (Array.isArray(question.correct_options) && question.correct_options.length > 0) {
+            correct = question.correct_options.map(String).map(v => v.toUpperCase());
+        } else if (typeof question.given_answer === 'string') {
+            const match = question.given_answer.match(/Correct\s*:\s*([A-Z](?:\s*,\s*[A-Z])*)/i);
+            if (match) {
+                correct = match[1].split(/\s*,\s*/).map(s => s.toUpperCase());
+            }
+        }
+        // Parse user selection like "A,B"
+        const selection = (userAnswer || '').split(/[\s,;]+/).filter(Boolean).map(s => s.toUpperCase());
+        const correctSet = new Set(correct);
+        const selSet = new Set(selection);
+        // Exact set match for multi; single match for radio
+        let isCorrect;
+        if (isMulti) {
+            if (correctSet.size === selSet.size) {
+                isCorrect = [...correctSet].every(v => selSet.has(v));
+            } else {
+                isCorrect = false;
+            }
+        } else {
+            isCorrect = selection.length === 1 && correctSet.has(selection[0]);
+        }
+        return {
+            score: isCorrect ? 1 : 0,
+            breakdown: { keywords: 0, jaccard: 0, math: 0, length: 0 },
+            matchedKeywords: [],
+            missingKeywords: [],
+            suggestions: isCorrect ? [] : ['Falsche Auswahl. Versuchen Sie es erneut.'],
+            color: isCorrect ? 'text-green-600' : 'text-red-600',
+            label: isCorrect ? 'Korrekt' : 'Falsch',
+            feedback: isCorrect ? 'Richtige Auswahl.' : `Richtig: ${correct.join(', ')}`,
+            diagnostics: { selection, correct }
+        };
+    }
     const {
         keywordWeight = 0.4,
         jaccardWeight = 0.3,

@@ -179,12 +179,13 @@ Angemeldete Benutzer erhalten:
     {
       "id": "Q1",
       "source": "Quelle oder Dateiname",
-      "type": "offene_frage | rechenaufgabe | definition | bildbasierte_frage",
+      "type": "offene_frage | rechenaufgabe | definition | bildbasierte_frage | mc_radio | mc_check",
       "topic": "Transformer/Attention",
       "question_text": "Fragetext mit $LaTeX$ Unterstützung",
       "math_blocks": ["\\text{Attention}(Q,K,V) = \\text{softmax}(QK^T/\\sqrt{d_k})V"],
       "images": ["Beschreibung oder Pfad zu Bild"],
-      "options": [],
+      "options": ["Option A text", "Option B text", "Option C text"],
+      "correct_options": ["B"],
       "given_answer": "Detaillierte Musterlösung",
       "verified": false,
       "notes": "Zusätzliche Hinweise"

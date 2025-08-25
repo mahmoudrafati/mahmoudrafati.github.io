@@ -18,6 +18,25 @@
       "notes": "Aus Screenshot; in der Klausur Freitext, keine MC."
     },
     {
+      "id": "Q59",
+      "source": "MC_ADDED_TOOL_2",
+      "type": "mc_check",
+      "topic": "Transformer/Attention",
+      "question_text": "Which statements about Multi-Head Attention are true?\n\nA) It uses several parallel attention heads.\n\nB) All heads must share the same projection matrices.\n\nC) Heads allow the model to capture different relations.\n\nD) Outputs of heads are concatenated and projected.",
+      "math_blocks": [],
+      "images": [],
+      "options": [
+        "It uses several parallel attention heads.",
+        "All heads must share the same projection matrices.",
+        "Heads allow the model to capture different relations.",
+        "Outputs of heads are concatenated and projected."
+      ],
+      "correct_options": ["A", "C", "D"],
+      "given_answer": "Correct: A, C, D — Multi-heads attend to different subspaces; outputs are concatenated then projected.",
+      "verified": false,
+      "notes": "Multiple selection (checkboxes)."
+    },
+    {
       "id": "Q2",
       "source": "SCREENSHOT_ED087468-70DC-422D-894E-0A9FC6033373.png",
       "type": "offene_frage",
@@ -803,6 +822,106 @@
       "given_answer": "Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",
       "verified": false,
       "notes": "Bitte manuell prüfen und ggf. transkribieren."
+    },
+    {
+      "id": "Q54",
+      "source": "MC_ADDED_TOOL_1",
+      "type": "mc_radio",
+      "topic": "Transformer/BERT/Language Modeling",
+      "question_text": "Can BERT be used as a classic generative language model?\n\nA) Yes, it directly models p(w_t | w_<t).\n\nB) Yes, it’s trained with next-token prediction like GPT.\n\nC) It uses MLM (bidirectional); iterative infilling is possible but inefficient vs decoder-only models.\n\nD) No, it cannot generate text at all.",
+      "math_blocks": [
+        "$\\text{MLM: } p(w_t \\mid \\text{links+rechts mit Masken})$",
+        "$\\text{AR-LM: } p(w_t \\mid w_{<t})$"
+      ],
+      "images": [],
+      "options": [
+        "Yes, it directly models p(w_t | w_<t).",
+        "Yes, it’s trained with next-token prediction like GPT.",
+        "It uses MLM (bidirectional); iterative infilling is possible but inefficient vs decoder-only models.",
+        "No, it cannot generate text at all."
+      ],
+      "correct_options": ["C"],
+      "given_answer": "Correct: C — BERT is trained with masked-language-modeling (bidirectional). It does not model p(w_t | w_{<t}); while infilling can generate text, it is inefficient and less controllable than decoder-only LMs.",
+      "verified": false,
+      "notes": "Multiple choice item. Current UI displays textarea; answer by entering the letter (e.g., C)."
+    },
+    {
+      "id": "Q55",
+      "source": "MC_ADDED_TOOL_1",
+      "type": "mc_radio",
+      "topic": "Transformer/Attention",
+      "question_text": "Why divide by \\u221As(d_k) in scaled dot-product attention?\n\nA) To increase gradient magnitudes at large d_k.\n\nB) To keep dot-product variance roughly constant and stabilize the softmax.\n\nC) To enforce sparsity via an L1-like effect.\n\nD) To make rows sum to 1 before softmax.",
+      "math_blocks": [
+        "$\\mathrm{Attn}(Q,K,V)=\\mathrm{softmax}\\!\\left(\\frac{QK^\\top}{\\sqrt{d_k}}\\right)V$"
+      ],
+      "images": [],
+      "options": [
+        "To increase gradient magnitudes at large d_k.",
+        "To keep dot-product variance roughly constant and stabilize the softmax.",
+        "To enforce sparsity via an L1-like effect.",
+        "To make rows sum to 1 before softmax."
+      ],
+      "correct_options": ["B"],
+      "given_answer": "Correct: B — Scaling normalizes the magnitude of QK^T to keep the softmax well-conditioned as d_k grows.",
+      "verified": false,
+      "notes": "Multiple choice item. Answer with a single letter."
+    },
+    {
+      "id": "Q56",
+      "source": "MC_ADDED_TOOL_1",
+      "type": "mc_radio",
+      "topic": "Transformer/Attention",
+      "question_text": "Self-attention complexity for sequence length n and hidden size d (per layer, full attention):\n\nA) Time O(n d), memory O(n)\n\nB) Time O(n^2 d), memory O(n^2)\n\nC) Time O(d^2 n), memory O(d^2)\n\nD) Time O(log n), memory O(n)",
+      "math_blocks": [],
+      "images": [],
+      "options": [
+        "Time O(n d), memory O(n)",
+        "Time O(n^2 d), memory O(n^2)",
+        "Time O(d^2 n), memory O(d^2)",
+        "Time O(log n), memory O(n)"
+      ],
+      "correct_options": ["B"],
+      "given_answer": "Correct: B — Computing QK^T has quadratic cost in n; storing attention weights is also O(n^2).",
+      "verified": false,
+      "notes": "Multiple choice item. Answer with a single letter."
+    },
+    {
+      "id": "Q57",
+      "source": "MC_ADDED_TOOL_1",
+      "type": "mc_radio",
+      "topic": "Klassifikation/Sicherheitsanwendungen",
+      "question_text": "Good evaluation practice for fake-news detection over time?\n\nA) Random k-fold is always safe for temporal data.\n\nB) Use a chronological split to avoid future-to-past leakage.\n\nC) Oversampling positives guarantees calibrated probabilities.\n\nD) Accuracy alone is sufficient for imbalanced data.",
+      "math_blocks": [],
+      "images": [],
+      "options": [
+        "Random k-fold is always safe for temporal data.",
+        "Use a chronological split to avoid future-to-past leakage.",
+        "Oversampling positives guarantees calibrated probabilities.",
+        "Accuracy alone is sufficient for imbalanced data."
+      ],
+      "correct_options": ["B"],
+      "given_answer": "Correct: B — Temporal splits avoid leakage; prefer metrics beyond accuracy for class imbalance.",
+      "verified": false,
+      "notes": "Multiple choice item. Answer with a single letter."
+    },
+    {
+      "id": "Q58",
+      "source": "MC_ADDED_TOOL_1",
+      "type": "mc_radio",
+      "topic": "Embeddings",
+      "question_text": "Benefit of character n-gram (FastText-like) word embeddings in highly inflected languages:\n\nA) Concatenating all n-grams minimizes dimensionality.\n\nB) Summing/averaging n-gram vectors yields robustness to morphology without collapsing lemmas.\n\nC) Pure lemmatization is strictly preferred.\n\nD) Subword features should be avoided.",
+      "math_blocks": [],
+      "images": [],
+      "options": [
+        "Concatenating all n-grams minimizes dimensionality.",
+        "Summing/averaging n-gram vectors yields robustness to morphology without collapsing lemmas.",
+        "Pure lemmatization is strictly preferred.",
+        "Subword features should be avoided."
+      ],
+      "correct_options": ["B"],
+      "given_answer": "Correct: B — Subword composition shares parameters across related forms, improving robustness to inflection.",
+      "verified": false,
+      "notes": "Multiple choice item. Answer with a single letter."
     }
   ]
 }

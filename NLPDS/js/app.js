@@ -523,10 +523,15 @@ function attachQuestionEvents() {
     const resetBtn = document.getElementById('reset-answer');
     if (resetBtn) {
         resetBtn.addEventListener('click', () => {
-            const textarea = document.getElementById('user-answer');
-            if (textarea) {
-                textarea.value = '';
-                textarea.focus();
+            const currentQuestion = getCurrentQuestion();
+            if (currentQuestion && currentQuestion.type && currentQuestion.type.startsWith('mc_')) {
+                document.querySelectorAll('.mc-input').forEach(i => i.checked = false);
+            } else {
+                const textarea = document.getElementById('user-answer');
+                if (textarea) {
+                    textarea.value = '';
+                    textarea.focus();
+                }
             }
             
             // Evaluation verstecken
@@ -709,16 +714,26 @@ function attachGlobalEvents() {
  * Antwort prüfen
  */
 async function handleCheckAnswer() {
-    const textarea = document.getElementById('user-answer');
-    const userAnswer = textarea?.value?.trim() || '';
-    
-    if (!userAnswer) {
-        showNotification('Bitte geben Sie eine Antwort ein.', 'warning');
-        return;
-    }
-    
     const currentQuestion = getCurrentQuestion();
     if (!currentQuestion) return;
+    
+    let userAnswer = '';
+    if ((currentQuestion.type && (currentQuestion.type.startsWith('mc_') || currentQuestion.type === 'multiple_choice')) || (Array.isArray(currentQuestion.options) && currentQuestion.options.length > 0)) {
+        const inputs = Array.from(document.querySelectorAll('.mc-input'));
+        const selected = inputs.filter(i => i.checked).map(i => i.value);
+        userAnswer = selected.join(',');
+        if (selected.length === 0) {
+            showNotification('Bitte wählen Sie mindestens eine Option aus.', 'warning');
+            return;
+        }
+    } else {
+        const textarea = document.getElementById('user-answer');
+        userAnswer = textarea?.value?.trim() || '';
+        if (!userAnswer) {
+            showNotification('Bitte geben Sie eine Antwort ein.', 'warning');
+            return;
+        }
+    }
     
     // Evaluation durchführen
     let evaluation;
@@ -731,6 +746,8 @@ async function handleCheckAnswer() {
         // Numerische Bewertung mit Text-Bewertung kombinieren
         evaluation.score = Math.max(evaluation.score, numEval.score);
         evaluation.numericalEvaluation = numEval;
+    } else if ((currentQuestion.type && (currentQuestion.type.startsWith('mc_') || currentQuestion.type === 'multiple_choice')) || (Array.isArray(currentQuestion.options) && currentQuestion.options.length > 0)) {
+        evaluation = evaluateAnswer(userAnswer, currentQuestion, { mode: 'multiple_choice' });
     } else {
         evaluation = evaluateAnswer(userAnswer, currentQuestion);
     }
@@ -910,8 +927,16 @@ function toggleSolution() {
  * @param {boolean} correct - Ist die Antwort korrekt?
  */
 function markAnswer(correct) {
-    const textarea = document.getElementById('user-answer');
-    const userAnswer = textarea?.value?.trim() || '';
+    const currentQuestion = getCurrentQuestion();
+    let userAnswer = '';
+    if (currentQuestion && currentQuestion.type && currentQuestion.type.startsWith('mc_')) {
+        const inputs = Array.from(document.querySelectorAll('.mc-input'));
+        const selected = inputs.filter(i => i.checked).map(i => i.value);
+        userAnswer = selected.join(',');
+    } else {
+        const textarea = document.getElementById('user-answer');
+        userAnswer = textarea?.value?.trim() || '';
+    }
     
     const score = correct ? 1.0 : 0.0;
     
@@ -941,12 +966,25 @@ function markAnswer(correct) {
 async function goToNextQuestion() {
     // Wenn noch nicht bewertet, automatisch bewerten
     if (!appState.currentEvaluation) {
-        const textarea = document.getElementById('user-answer');
-        const userAnswer = textarea?.value?.trim() || '';
+        const currentQuestion = getCurrentQuestion();
+        let userAnswer = '';
+        let evaluation = null;
+        if (currentQuestion && currentQuestion.type && currentQuestion.type.startsWith('mc_')) {
+            const inputs = Array.from(document.querySelectorAll('.mc-input'));
+            const selected = inputs.filter(i => i.checked).map(i => i.value);
+            if (selected.length > 0) {
+                userAnswer = selected.join(',');
+                evaluation = evaluateAnswer(userAnswer, currentQuestion, { mode: 'multiple_choice' });
+            }
+        } else {
+            const textarea = document.getElementById('user-answer');
+            userAnswer = textarea?.value?.trim() || '';
+            if (userAnswer) {
+                evaluation = evaluateAnswer(userAnswer, currentQuestion);
+            }
+        }
         
-        if (userAnswer) {
-            const currentQuestion = getCurrentQuestion();
-            const evaluation = evaluateAnswer(userAnswer, currentQuestion);
+        if (evaluation) {
             
             await saveAnswerResult({
                 userAnswer,
