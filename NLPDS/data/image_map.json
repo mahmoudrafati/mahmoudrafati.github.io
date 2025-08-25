@@ -1,0 +1,19 @@
+{
+  "bySource": {
+    "comment": "Mapping von question.source zu Asset-Dateien in ./assets/questions/",
+    "examples": {
+      "NLP_Cluster_aufgaben.pdf_3": "cluster_p3.png",
+      "Probeklausur.pdf_12": "transformer_block.png"
+    }
+  },
+  "byHint": {
+    "comment": "Mapping von topic/image-Hinweisen zu Asset-Dateien",
+    "examples": {
+      "Transformer": "transformer_block.svg",
+      "Sentiment": "sentiment_pipeline.svg",
+      "Decision Tree": "decision_tree_stub.svg",
+      "Confusion": "confusion_matrix.svg",
+      "MLM": "mlm_bias.svg"
+    }
+  }
+}

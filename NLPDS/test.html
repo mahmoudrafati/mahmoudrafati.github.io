@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NLP Learning - Debug Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .success { background: #d4edda; border-color: #c3e6cb; }
+        .error { background: #f8d7da; border-color: #f5c6cb; }
+        .log { background: #f8f9fa; border: 1px solid #dee2e6; padding: 10px; margin: 10px 0; font-family: monospace; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>🔧 NLP Learning App - Debug Test</h1>
+    
+    <div id="test-1" class="test">
+        <h3>Test 1: JavaScript läuft</h3>
+        <div id="js-test">❌ JavaScript läuft nicht</div>
+    </div>
+    
+    <div id="test-2" class="test">
+        <h3>Test 2: JSON-Datei erreichbar</h3>
+        <div id="json-test">🔄 Teste...</div>
+    </div>
+    
+    <div id="test-3" class="test">
+        <h3>Test 3: ES6 Module Support</h3>
+        <div id="module-test">🔄 Teste...</div>
+    </div>
+    
+    <div id="test-4" class="test">
+        <h3>Test 4: App initialisierung</h3>
+        <div id="app-test">🔄 Teste...</div>
+    </div>
+    
+    <div class="log" id="console-log">
+        <strong>Console Log:</strong><br>
+    </div>
+    
+    <script>
+        // Console-Log umleiten
+        const logElement = document.getElementById('console-log');
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        function addToLog(type, ...args) {
+            const message = args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+            logElement.innerHTML += `${type}: ${message}\n`;
+        }
+        
+        console.log = (...args) => {
+            originalLog(...args);
+            addToLog('LOG', ...args);
+        };
+        
+        console.error = (...args) => {
+            originalError(...args);
+            addToLog('ERROR', ...args);
+        };
+        
+        // Test 1: JavaScript läuft
+        document.getElementById('js-test').innerHTML = '✅ JavaScript läuft';
+        document.getElementById('test-1').classList.add('success');
+        
+        // Test 2: JSON-Datei erreichbar
+        async function testJSON() {
+            try {
+                const response = await fetch('./data/exam_questions_combined.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                const data = await response.json();
+                
+                if (!data.exam_questions || !Array.isArray(data.exam_questions)) {
+                    throw new Error('Ungültiges JSON-Format');
+                }
+                
+                document.getElementById('json-test').innerHTML = `✅ JSON geladen: ${data.exam_questions.length} Fragen`;
+                document.getElementById('test-2').classList.add('success');
+                
+            } catch (error) {
+                document.getElementById('json-test').innerHTML = `❌ JSON-Fehler: ${error.message}`;
+                document.getElementById('test-2').classList.add('error');
+                console.error('JSON-Test fehlgeschlagen:', error);
+            }
+        }
+        
+        // Test 3: ES6 Module Support
+        async function testModules() {
+            try {
+                // Prüfe ob wir in einem Module-Context sind
+                const supportsModules = 'noModule' in HTMLScriptElement.prototype;
+                if (!supportsModules) {
+                    throw new Error('ES6 Module werden nicht unterstützt');
+                }
+                
+                document.getElementById('module-test').innerHTML = '✅ ES6 Module werden unterstützt';
+                document.getElementById('test-3').classList.add('success');
+                
+                // Test Module-Import
+                testModuleImport();
+                
+            } catch (error) {
+                document.getElementById('module-test').innerHTML = `❌ Module-Fehler: ${error.message}`;
+                document.getElementById('test-3').classList.add('error');
+                console.error('Module-Test fehlgeschlagen:', error);
+            }
+        }
+        
+        // Test Module-Import
+        async function testModuleImport() {
+            try {
+                console.log('Teste Module-Import...');
+                const storeModule = await import('./js/store.js');
+                console.log('store.js importiert:', typeof storeModule.state);
+                
+                const renderModule = await import('./js/render.js');
+                console.log('render.js importiert:', typeof renderModule.renderPage);
+                
+                document.getElementById('app-test').innerHTML = '✅ Module erfolgreich importiert';
+                document.getElementById('test-4').classList.add('success');
+                
+            } catch (error) {
+                document.getElementById('app-test').innerHTML = `❌ Import-Fehler: ${error.message}`;
+                document.getElementById('test-4').classList.add('error');
+                console.error('Module-Import fehlgeschlagen:', error);
+            }
+        }
+        
+        // Tests ausführen
+        console.log('🚀 Starte Debug-Tests...');
+        testJSON();
+        testModules();
+    </script>
+</body>
+</html>

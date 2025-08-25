@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NLP Learning - Math Debug</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+        .test { margin: 20px 0; padding: 15px; border: 2px solid #ccc; border-radius: 8px; }
+        .success { border-color: #4ade80; background: #f0fdf4; }
+        .error { border-color: #f87171; background: #fef2f2; }
+        .warning { border-color: #fbbf24; background: #fffbeb; }
+        button { padding: 8px 16px; margin: 5px; background: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #2563eb; }
+        .math-test { background: #f8fafc; padding: 10px; margin: 10px 0; border-radius: 4px; }
+        .debug-info { font-family: monospace; font-size: 12px; color: #666; }
+        
+        /* Dark Mode für Debug-Seite */
+        body.debug-dark {
+            background-color: #1f2937;
+            color: #f9fafb;
+        }
+        
+        .debug-dark .test {
+            background-color: #374151;
+            border-color: #4b5563;
+            color: #f9fafb;
+        }
+        
+        .debug-dark .success {
+            background-color: #064e3b;
+            border-color: #34d399;
+        }
+        
+        .debug-dark .error {
+            background-color: #7f1d1d;
+            border-color: #f87171;
+        }
+        
+        .debug-dark .warning {
+            background-color: #78350f;
+            border-color: #fbbf24;
+        }
+        
+        .debug-dark .math-test {
+            background-color: #4b5563;
+            color: #f9fafb;
+        }
+        
+        .debug-dark #console-output {
+            background-color: #111827;
+            border: 1px solid #4b5563;
+        }
+        
+        /* KaTeX im Dark Mode */
+        .debug-dark .katex {
+            color: #f9fafb !important;
+        }
+        
+        .debug-dark .katex .base,
+        .debug-dark .katex .mord,
+        .debug-dark .katex .mrel,
+        .debug-dark .katex .mop,
+        .debug-dark .katex .mbin,
+        .debug-dark .katex .mpunct,
+        .debug-dark .katex .mopen,
+        .debug-dark .katex .mclose,
+        .debug-dark .katex .minner {
+            color: #f9fafb !important;
+        }
+    </style>
+    
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+</head>
+<body>
+    <h1>🔬 KaTeX Math Debugging</h1>
+    
+    <div class="test" id="availability-test">
+        <h3>1. KaTeX Verfügbarkeit</h3>
+        <div id="availability-result">🔄 Teste...</div>
+        <div class="debug-info" id="availability-debug"></div>
+    </div>
+    
+    <div class="test" id="rendering-test">
+        <h3>2. Basis Rendering Test</h3>
+        <div class="math-test">
+            <strong>Inline:</strong> $E = mc^2$ und $\alpha + \beta = \gamma$
+        </div>
+        <div class="math-test">
+            <strong>Display:</strong> 
+            $$\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}$$
+        </div>
+        <div class="math-test">
+            <strong>Complex:</strong>
+            $$\text{Attention}(Q,K,V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
+        </div>
+        <button onclick="manualRender()">Manuell rendern</button>
+        <div id="render-result">🔄 Noch nicht gerendert</div>
+    </div>
+    
+    <div class="test" id="nlp-test">
+        <h3>3. NLP-spezifische Formeln (Original JSON)</h3>
+        <div class="math-test" id="nlp-formulas">
+            <p><strong>Word Embeddings:</strong> $\displaystyle \mathbf{v}(w)=\sum_{g\in G(w)} \mathbf{z}_g$</p>
+            <p><strong>Sentiment Tupel:</strong> $(e_x, e_y, a, s_r)$</p>
+            <p><strong>Set Definition:</strong> $s_r \in \{\mathrm{besser}, \mathrm{gleich}, \mathrm{schlechter}\}$</p>
+            <p><strong>Bias Template:</strong> $\text{Template: } \_ \text{ arbeitet als Ingenieur.}$</p>
+            <p><strong>Bias Measure:</strong> $\displaystyle \Delta = P(\text{männlich} \mid \text{Ingenieur}) - P(\text{weiblich} \mid \text{Ingenieur})$</p>
+        </div>
+        <div id="nlp-result">🔄 Noch nicht gerendert</div>
+    </div>
+    
+    <div class="test" id="wrong-test">
+        <h3>4. Falsche Syntax (zum Vergleich)</h3>
+        <div class="math-test">
+            <p><strong>Doppelt gewickelt (falsch):</strong> $$$\displaystyle \mathbf{v}(w)=\sum_{g\in G(w)} \mathbf{z}_g$$$</p>
+            <p><strong>Richtig:</strong> $\displaystyle \mathbf{v}(w)=\sum_{g\in G(w)} \mathbf{z}_g$</p>
+        </div>
+    </div>
+    
+    <div class="test">
+        <h3>5. Debug Controls</h3>
+        <button onclick="clearRendering()">Rendering zurücksetzen</button>
+        <button onclick="forceRender()">Force-Render alles</button>
+        <button onclick="testAutoRender()">Auto-Render testen</button>
+        <button onclick="showMathElements()">Math-Elemente anzeigen</button>
+        <button onclick="toggleDebugDarkMode()" id="dark-toggle">🌙 Dark Mode</button>
+    </div>
+    
+    <div class="test">
+        <h3>6. Console Log</h3>
+        <div id="console-output" style="background: #000; color: #0f0; padding: 10px; font-family: monospace; height: 200px; overflow-y: auto;"></div>
+    </div>
+
+    <!-- KaTeX Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    
+    <script>
+        // Console Redirect
+        const consoleOutput = document.getElementById('console-output');
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        function logToDiv(type, ...args) {
+            const message = args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+            consoleOutput.innerHTML += `${type}: ${message}\n`;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+        
+        console.log = (...args) => {
+            originalLog(...args);
+            logToDiv('LOG', ...args);
+        };
+        
+        console.error = (...args) => {
+            originalError(...args);
+            logToDiv('ERROR', ...args);
+        };
+        
+        // 1. Verfügbarkeitstest
+        function testAvailability() {
+            const checks = {
+                katex: typeof katex !== 'undefined',
+                renderMathInElement: typeof renderMathInElement !== 'undefined',
+                window_katex: typeof window.katex !== 'undefined',
+                window_renderMathInElement: typeof window.renderMathInElement !== 'undefined'
+            };
+            
+            console.log('KaTeX Verfügbarkeit:', checks);
+            
+            let resultHtml = '';
+            let allGood = true;
+            
+            for (const [key, value] of Object.entries(checks)) {
+                const status = value ? '✅' : '❌';
+                resultHtml += `${status} ${key}: ${value}<br>`;
+                if (!value && (key === 'katex' || key === 'renderMathInElement')) {
+                    allGood = false;
+                }
+            }
+            
+            document.getElementById('availability-result').innerHTML = resultHtml;
+            document.getElementById('availability-debug').innerHTML = JSON.stringify(checks, null, 2);
+            
+            const testDiv = document.getElementById('availability-test');
+            testDiv.className = allGood ? 'test success' : 'test error';
+            
+            return allGood;
+        }
+        
+        // 2. Manual Render
+        function manualRender() {
+            if (!testAvailability()) {
+                document.getElementById('render-result').innerHTML = '❌ KaTeX nicht verfügbar';
+                return;
+            }
+            
+            try {
+                const renderingTest = document.getElementById('rendering-test');
+                renderMathInElement(renderingTest, {
+                    delimiters: [
+                        { left: '$$', right: '$$', display: true },
+                        { left: '$', right: '$', display: false }
+                    ],
+                    throwOnError: false
+                });
+                
+                document.getElementById('render-result').innerHTML = '✅ Rendering erfolgreich';
+                document.getElementById('rendering-test').className = 'test success';
+                console.log('Manual render erfolgreich');
+                
+            } catch (error) {
+                document.getElementById('render-result').innerHTML = '❌ Rendering fehlgeschlagen: ' + error.message;
+                document.getElementById('rendering-test').className = 'test error';
+                console.error('Manual render Fehler:', error);
+            }
+        }
+        
+        // 3. NLP Formulas
+        function renderNLPFormulas() {
+            try {
+                const nlpDiv = document.getElementById('nlp-formulas');
+                renderMathInElement(nlpDiv, {
+                    delimiters: [
+                        { left: '$$', right: '$$', display: true },
+                        { left: '$', right: '$', display: false }
+                    ],
+                    throwOnError: false
+                });
+                
+                document.getElementById('nlp-result').innerHTML = '✅ NLP Formeln gerendert';
+                document.getElementById('nlp-test').className = 'test success';
+                console.log('NLP formulas rendered');
+                
+            } catch (error) {
+                document.getElementById('nlp-result').innerHTML = '❌ NLP Rendering fehlgeschlagen: ' + error.message;
+                document.getElementById('nlp-test').className = 'test error';
+                console.error('NLP render error:', error);
+            }
+        }
+        
+        // Debug Functions
+        function clearRendering() {
+            document.querySelectorAll('.katex').forEach(el => el.remove());
+            console.log('Alle KaTeX-Elemente entfernt');
+        }
+        
+        function forceRender() {
+            clearRendering();
+            setTimeout(() => {
+                manualRender();
+                renderNLPFormulas();
+            }, 100);
+        }
+        
+        function testAutoRender() {
+            console.log('Teste Auto-Render...');
+            renderMathInElement(document.body, {
+                delimiters: [
+                    { left: '$$', right: '$$', display: true },
+                    { left: '$', right: '$', display: false }
+                ],
+                throwOnError: false
+            });
+        }
+        
+        function showMathElements() {
+            const mathElements = document.querySelectorAll('.math-test, .katex');
+            console.log('Gefundene Math-Elemente:', mathElements.length);
+            mathElements.forEach((el, i) => {
+                console.log(`Element ${i}:`, el.outerHTML.substring(0, 100));
+            });
+        }
+        
+        function toggleDebugDarkMode() {
+            const body = document.body;
+            const button = document.getElementById('dark-toggle');
+            
+            body.classList.toggle('debug-dark');
+            
+            if (body.classList.contains('debug-dark')) {
+                button.textContent = '☀️ Light Mode';
+                console.log('🌙 Dark Mode aktiviert für Debug-Seite');
+            } else {
+                button.textContent = '🌙 Dark Mode';
+                console.log('☀️ Light Mode aktiviert für Debug-Seite');
+            }
+            
+            // Mathematik nach Theme-Wechsel neu rendern
+            setTimeout(() => {
+                forceRender();
+            }, 100);
+        }
+        
+        // Auto-Start
+        window.addEventListener('load', () => {
+            console.log('🚀 Debug-Seite geladen');
+            setTimeout(testAvailability, 100);
+        });
+    </script>
+</body>
+</html>

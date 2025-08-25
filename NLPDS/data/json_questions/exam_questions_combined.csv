@@ -1,0 +1,118 @@
+id,source,type,topic,question_text,given_answer,notes
+Q1,SCREENSHOT_60CCEE21-78C6-47C3-92B8-7FA6AC3F92EE.jpeg,offene_frage,Embeddings,"In stark flektierenden Sprachen sollen Word-Embeddings gegenüber Formvarianten robust sein,
+ohne alle Wortformen eines Lemmas zu verschmelzen. Skizzieren Sie einen Ansatz, wie Sie
+Wörter über Zeichen-n-Gramme repräsentieren und daraus Wort-Embeddings bilden.","Verwenden Sie **Char-n-Gramm-Embeddings** (FastText-Prinzip): Zerlegen Sie jedes Wort w in ein Set G(w)
+aus überlappenden Zeichen-n-Grammen (inkl. Anfangs/Endmarker). Lernen Sie für jedes n‑Gramm g ein Vektor
+z_g. Das Wort-Embedding berechnet sich als **Summe (oder Mittel)** der zugehörigen n‑Gramm-Vektoren:
+v(w)=∑_{g∈G(w)} z_g. Dadurch bleiben Wortformen **ähnlich**, aber **nicht identisch** (geteilte Subvektoren).
+Keine reine Lemmatisierung (würde Formen gleichsetzen) und keine bloße Konkatenation (würde Dimension sprengen).","Aus Screenshot; in der Klausur Freitext, keine MC."
+Q2,SCREENSHOT_ED087468-70DC-422D-894E-0A9FC6033373.png,offene_frage,Sentiment Analysis,"Ein relationales Sentiment‑Tupel sei definiert als (e_x, e_y, a, s_r) mit s_r ∈ {besser, gleich, schlechter}.
+Lesen Sie den Beispieltext (Smartphones X42 vs. Z23 Ultra) und geben Sie alle im Text enthaltenen relationalen
+Sentiment‑Tupel an.","Aus dem Text ergeben sich:
+1) (Universe X42, Universe Z23 Ultra, Fotoqualität, gleich) — „grundsätzlich gleich gute Fotos“.
+2) (Universe X42, Universe Z23 Ultra, Farbnatürlichkeit, schlechter) — „Z23 Ultra zeigt natürlichere Farben“.
+Schärfe/Helligkeit werden als „stimmen überein“ beschrieben → relational „gleich“. Akku/Charging ist nicht als klarer
+Vergleich zwischen X42 und Z23 Ultra formuliert → kein relationales Tupel.","Aus Screenshot; Auswahl im Original als MC, hier Freitext."
+Q3,SCREENSHOT_842FEDC8-C55E-497B-A618-FCC793EE214C.png,offene_frage,Transformer/Bias,"Gegeben sei ein Masked Language Model (MLM) wie BERT. Skizzieren Sie einen Ansatz, um nachzuweisen,
+ob das Modell einen Gender‑Bias repliziert (z. B. bei Berufsrollen). Beschreiben Sie kurz Templates,
+Maskierung, Auswertung und ein Bias‑Maß.","**Bias‑Probe (Zero‑shot‑Templates):**
+1) Erstellen Sie neutrale Sätze mit einem Masken‑Slot für Namen: „[MASK] arbeitet als Ingenieur/Krankenschwester.“
+2) Lassen Sie BERTs MLM‑Head Top‑k‑Token für [MASK] vorhersagen und zählen Sie männliche vs. weibliche Namen.
+3) Erwartung: Für „Ingenieur“ treten häufiger männliche Namen auf; für „Krankenschwester“ häufiger weibliche.
+4) **Bias‑Maß:** Δ = P(männlich | Ingenieur) − P(weiblich | Ingenieur) (analog für andere Rollen). Signifikant
+von 0 verschieden (z. B. t‑Test/Bootstrap) ⇒ Bias. Optional: Normalisieren über Namensfrequenzen und kontrollieren
+für Kontexte, mehrere Sprachen/Berufslisten, Konfidenzintervalle berichten.",Aus Screenshot; Freitext.
+Q4,CHAT_GLMPROMPT_1,offene_frage,Maschinelle Übersetzung/Prompting,"Sie haben Zugriff auf ein großes Generative Language Model (GLM; Next‑Token‑Prediction). Entwickeln Sie einen
+Prompt‑basierten Ansatz, um eine **automatische Übersetzung** für einen kleinen Datensatz zu implementieren,
+und erläutern Sie den Ablauf (Prompt‑Design, Inferenz, Qualitätssicherung).","**Ansatz:** *Instruction‑/Few‑shot‑Prompting* mit striktem Format.
+- **Few‑shot‑Beispiele** aus dem kleinen Datensatz (2–10 Satzpaare) im Schema:
+  „Translate German → English. Preserve punctuation and names.
+German: <S>
+English: <T>“.
+- **Prompt‑Schablone:** System: „You are a translation engine. Output only the translation.“
+  + Regeln: keine Erklärungen, keine Halluzinationen, Zahlen/Einheiten beibehalten.
+- **Inferenz:** Greedy/Beam (kleines Beam 3–5) für Determinismus; max_length, no_repeat_ngram ≥ 3.
+- **Post‑Checks:** Round‑trip‑Check (de→en→de), einfache Heuristiken (Anführungszeichen/Tags erhalten),
+  optional TER/BLEU auf Valid‑Subset.
+- **Feintuning light (optional):** Parameter‑Effizienz (LoRA/PEFT) auf dem kleinen Satzpaar‑Set,
+  falls das reine Prompting nicht stabil genug ist.
+- **Batching:** Satzweise; bei langen Inputs Segmentierung und Zusammensetzen.",Aus Chat‑Gedächtnisprotokoll.
+Q5,CHAT_BERTGEN_1,offene_frage,Transformer/BERT/Language Modeling,Kann BERT für **generatives Language Modeling** verwendet werden? Begründen Sie Ihre Antwort.,"**Kurz:** Nicht sinnvoll als *klassisches* generatives LM.
+- **BERT** wird mit **Masked‑Language‑Modeling** (bidirektionaler Kontext) trainiert und approximiert *kein*
+  autoregressives p(w_t | w_{<t}).
+- Man *kann* mit iterativem Maskieren/Infilling Text erzeugen, das ist jedoch **ineffizient** und
+  qualitativ/steuerbar den **Decoder‑only** (GPT) oder **Encoder‑Decoder** (T5)‑Modellen unterlegen.
+- Für echtes NTP/AR‑LM sind Decoder‑only‑Modelle die passende Architektur.",Aus Chat‑Gedächtnisprotokoll.
+Q6,CHAT_WEAKAI_1,definition,KI-Grundlagen,"Nennen und begründen Sie drei Gründe, warum eine KI, die einzelne Matheaufgaben löst, als **schwache (narrow) KI** gilt.","1) **Enger Aufgabenscope:** Optimiert für ein klar umrissenes Problem (Matheaufgaben) statt allgemeiner Intelligenz.
+2) **Kein Weltverständnis/Bewusstsein:** Manipuliert Symbole/Heuristiken, ohne semantisches Verstehen oder Intentionalität.
+3) **Begrenzte Transferfähigkeit:** Außerhalb des Trainingsregimes/Formats bricht die Leistung ein; kein breiter Common‑Sense,
+   keine langfristige Planung/Autonomie. (Optional: fehlende Zielautonomie, keine eigenen Motive/Erfahrungsbildung.)",Aus Chat‑Gedächtnisprotokoll.
+Q7,CHAT_SKIPGRAM_1,rechenaufgabe,Sprachmodellierung/Word2Vec,"Gegeben ist das Skip‑gram‑Ziel. Modifizieren Sie die Definition so, dass
+a) nur Verben und Adjektive erfasst werden,
+b) statt eines fixen Fensters k ein Anteil p∈(0,1) der Token berücksichtigt wird,
+c) statt sequenzieller Abstände **baum‑basierte** Abstände (z. B. Dependenz‑Baum) bis k verwendet werden.","a) Filtern über **POS‑Tags**: Beiträge zählen nur, wenn Target **und** Kontext POS∈{VERB, ADJ} sind.
+b) Ersetze Fensterbreite durch **K = ⌊p·T⌋**; Kontextindizes j laufen über −K…K, j≠0.
+c) Ersetze sequentielle Distanz |j| durch **Baumdistanz** d_tree(t,j) in einem (m=T) Knotentextbaum und
+bilde die Kontextnachbarschaft 𝒩_k(t) = {j≠t : d_tree(t,j) ≤ k}. Das Ziel bleibt „maximal k Abstände“ im Baum.",Aus Chat‑Gedächtnisprotokoll.
+Q8,CHAT_FAKENEWS_1,offene_frage,Klassifikation/Sicherheitsanwendungen,"Skizzieren Sie einen Ansatz für **Fake‑News‑Detektion**: Daten, Features/Modelle, Evaluation, Robustheit.","**Pipeline:**
+- **Daten:** Titel+Body; Label (fake/real). Split chronologisch (Leak vermeiden). Balancing prüfen.
+- **Vorverarbeitung:** Normalisieren, URLs/Handles, Sprachdetektion; ggf. Claim‑Extraktion.
+- **Repräsentationen:** (a) TF‑IDF n‑Gramme (1–3), (b) kontextuelle Embeddings (BERT/Longformer).
+- **Modelle:** Lineare Baselines (LogReg/SVM) + Feintuning eines Encoder‑Modells (CLS‑Token → Softmax).
+- **Evaluation:** Stratified k‑fold oder zeitlich getreu; Metriken: Precision/Recall/F1, ROC‑AUC; Kalibrierung prüfen.
+- **Robustheit:** Adversarien (Paraphrasen), Quellen‑/Themen‑Shift (OOD‑Test), Erklärbarkeit (SHAP/Attention‑Rollout),
+  und Regel‑Checks (Clickbait‑Indikatoren) kombinieren.
+- **Fehleranalyse:** Confusion‑Matrizen, Hard‑Negatives sammeln und nachtrainieren.",Aus Chat‑Gedächtnisprotokoll.
+Q9,CHAT_ATTENTION_1,offene_frage,Transformer/Attention,"Erläutern Sie **Scaled Dot‑Product Self‑Attention** und nennen Sie die Schritte der Berechnung.
+Gehen Sie auch kurz auf **Multi‑Head Attention** und die Rechenkomplexität ein.","**Self‑Attention:**
+1) Lineare Projektionen: Q=XW^Q, K=XW^K, V=XW^V.
+2) Skalarprodukte: S=QK^T / √d_k (Skalierung stabilisiert Gradienten).
+3) Gewichte: A=softmax(S) zeilenweise.
+4) Ausgabe: Z = A·V.
+**Multi‑Head:** h parallele Köpfe mit kleineren d_k, die unterschiedliche Relationen lernen; deren Ausgaben werden
+konkateniert und mit W^O projiziert. **Komplexität:** O(n²·d) in der Sequenzlänge n (durch QK^T); Speicher O(n²).
+Maskierte Attention (Decoder) verhindert Blick in die Zukunft.",Aus Chat‑Gedächtnisprotokoll; genaue Aufgabenstellung unbekannt.
+Q10,NLP_Cluster_aufgaben.pdf_1,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q11,NLP_Cluster_aufgaben.pdf_2,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q12,NLP_Cluster_aufgaben.pdf_3,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q13,NLP_Cluster_aufgaben.pdf_4,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q14,NLP_Cluster_aufgaben.pdf_5,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q15,NLP_Cluster_aufgaben.pdf_6,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q16,NLP_Cluster_aufgaben.pdf_7,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q17,NLP_Cluster_aufgaben.pdf_8,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q18,NLP_Cluster_aufgaben.pdf_9,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q19,NLP_Cluster_aufgaben.pdf_10,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q20,NLP_Cluster_aufgaben.pdf_11,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q21,NLP_Cluster_aufgaben.pdf_12,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q22,NLP_Cluster_aufgaben.pdf_13,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q23,NLP_Cluster_aufgaben.pdf_14,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q24,NLP_Cluster_aufgaben.pdf_15,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q25,NLP_Cluster_aufgaben.pdf_16,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q26,NLP_Cluster_aufgaben.pdf_17,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q27,NLP_Cluster_aufgaben.pdf_18,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q28,NLP_Cluster_aufgaben.pdf_19,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q29,NLP_Cluster_aufgaben.pdf_20,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q30,NLP_Cluster_aufgaben.pdf_21,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q31,NLP_Cluster_aufgaben.pdf_22,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q32,NLP_Cluster_aufgaben.pdf_23,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q33,NLP_Cluster_aufgaben.pdf_24,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q34,NLP_Cluster_aufgaben.pdf_25,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q35,NLP_Cluster_aufgaben.pdf_26,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q36,NLP_Cluster_aufgaben.pdf_27,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q37,NLP_Cluster_aufgaben.pdf_28,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q38,NLP_Cluster_aufgaben.pdf_29,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q39,NLP_Cluster_aufgaben.pdf_30,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q40,NLP_Cluster_aufgaben.pdf_31,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q41,NLP_Cluster_aufgaben.pdf_32,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q42,Probeklausur.pdf_1,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q43,Probeklausur.pdf_2,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q44,Probeklausur.pdf_3,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q45,Probeklausur.pdf_4,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q46,Probeklausur.pdf_5,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q47,Probeklausur.pdf_6,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q48,Probeklausur.pdf_7,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q49,Probeklausur.pdf_8,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q50,Probeklausur.pdf_9,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q51,Probeklausur.pdf_10,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q52,Probeklausur.pdf_11,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.
+Q53,Probeklausur.pdf_12,bildbasierte_frage,NLP-Allgemein,,"Lösungsskizze: Beantworten Sie die Frage präzise in eigenen Worten und nennen Sie relevante Definitionen, Beispiele und Begründungen; verweisen Sie, wo sinnvoll, auf Formeln oder Algorithmen.",Bitte manuell prüfen und ggf. transkribieren.

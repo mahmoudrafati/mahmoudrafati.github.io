@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="./">
+    <title>NLP Learning - Interaktive Fragentool</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+    50: '#f0fdfa',
+    100: '#ccfbf1',
+    200: '#99f6e4',
+    300: '#5eead4',
+    400: '#2dd4bf',
+    500: '#14b8a6',
+    600: '#0d9488',
+    700: '#0f766e',
+    800: '#115e59',
+    900: '#134e4a'
+}
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./css/custom.css">
+</head>
+<body class="bg-gray-50 font-sans antialiased">
+    <!-- Header -->
+    <header class="bg-primary-700 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <img src="./assets/logo.svg" alt="NLP Learning Logo" class="w-8 h-8">
+                    <h1 class="text-2xl font-bold">NLP Learning</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div id="data-status" class="text-sm opacity-90">
+                        Laden...
+                    </div>
+                    
+                    <!-- User Section -->
+                    <div id="user-section" class="text-sm">
+                        <!-- Logged out state -->
+                        <div id="auth-logged-out">
+                            <button id="login-btn" class="text-primary-100 hover:text-white transition-colors font-medium">
+                                👤 Anmelden
+                            </button>
+                        </div>
+                        
+                        <!-- Logged in state -->
+                        <div id="auth-logged-in" class="hidden">
+                            <div class="flex items-center space-x-3">
+                                <div id="sync-indicator" class="hidden">
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        ✓ Sync
+                                    </span>
+                                </div>
+                                <span class="text-primary-100">
+                                    Hallo, <span id="username-display" class="font-medium text-white">Max</span>
+                                </span>
+                                <button id="user-menu-btn" class="text-primary-100 hover:text-white transition-colors p-1 rounded-md hover:bg-primary-600">
+                                    ⚙️
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="theme-toggle" class="p-2 rounded-md bg-primary-600 hover:bg-primary-500 transition-colors" aria-label="Theme wechseln">
+                        🌙
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main App Container -->
+    <main id="app" class="container mx-auto px-4 py-8 min-h-screen">
+        <!-- Content wird durch JavaScript gerendert -->
+        <div class="flex items-center justify-center h-64">
+            <div class="text-center">
+                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+                <p class="text-gray-600">App wird geladen...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 border-t py-6 mt-12">
+        <div class="container mx-auto px-4 text-center text-sm text-gray-600">
+            <p>⚠️ <strong>Hinweis:</strong> Alle Lösungen sind inoffiziell (verified=false) und dienen nur zu Übungszwecken.</p>
+            <p class="mt-2">Alle Daten werden lokal im Browser gespeichert. Kein Server erforderlich.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <!-- KaTeX JS (muss vor der App geladen werden) -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    
+    <!-- Marked.js für Markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js"></script>
+    
+
+
+    <!-- App Modules (warten bis KaTeX geladen ist) -->
+    <script type="module" src="./js/app.js"></script>
+</body>
+</html>
